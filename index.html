@@ -224,7 +224,7 @@
     cursor: not-allowed;
     transform: none !important;
   }
-  .color-btn .icon { font-size: 32px; line-height: 1; }
+  .color-btn .icon { display:flex; align-items:center; justify-content:center; line-height:1; }
   .color-btn .label { color: rgba(255,255,255,0.9); font-size: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 
   .btn-wood { background: linear-gradient(135deg, #a8e6b0, #6dbe7a); }
@@ -377,14 +377,14 @@
   }
 
   .result-icon-wrap {
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
     flex-shrink: 0;
+    overflow: hidden;
   }
   .result-body { flex: 1; }
   .result-position {
@@ -458,6 +458,36 @@
     letter-spacing: 2px;
     margin-bottom: 8px;
   }
+  .lucky-box {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 22px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+  .lucky-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 10px;
+  }
+  .lucky-stars {
+    font-size: 30px;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+  .lucky-relation {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+  }
+
   .purchase-block {
     background: linear-gradient(135deg, #2d1b4e, #1a1035);
     border-radius: 26px;
@@ -542,7 +572,7 @@
 <div class="container">
   <!-- Header -->
   <div class="header">
-    <div class="emoji-row">🌱🌸🍯🌙🫧</div>
+    <div class="emoji-row" style="font-size:13px;letter-spacing:6px;opacity:0.6;font-weight:700;">林間 · 赤焰 · 琥珀 · 虛白 · 深淵</div>
     <h1>色彩<span>靈占</span></h1>
     <p>憑直覺選色，讓能量為你低語 ✨</p>
   </div>
@@ -553,12 +583,29 @@
 
 <script>
 const ELEMENTS = [
-  { key: 'wood',  name: '林間呼吸', cute: '🌱', bigEmoji: '🌿', color: '#6dbe7a', light: '#d4f5da', textColor: '#2a5e3a', scent: '林間呼吸' },
-  { key: 'fire',  name: '赤焰之心', cute: '🌸', bigEmoji: '🌸', color: '#ff6b6b', light: '#ffd6d6', textColor: '#9b2a2a', scent: '赤焰之心' },
-  { key: 'earth', name: '琥珀靜土', cute: '🍯', bigEmoji: '🍯', color: '#e8a800', light: '#fff5c0', textColor: '#7a5800', scent: '琥珀靜土' },
-  { key: 'metal', name: '虛白之境', cute: '🌙', bigEmoji: '🌙', color: '#7a96ae', light: '#dce8f0', textColor: '#2c4a5e', scent: '虛白之境' },
-  { key: 'water', name: '深淵低語', cute: '🫧', bigEmoji: '🫧', color: '#3a7fc1', light: '#cce3f7', textColor: '#1a3d6e', scent: '深淵低語' },
+  { key: 'wood',  name: '林間呼吸', cute: '🌱', color: '#6dbe7a', light: '#d4f5da', textColor: '#2a5e3a', scent: '林間呼吸',
+    svgId: 'svg-wood' },
+  { key: 'fire',  name: '赤焰之心', cute: '🌸', color: '#ff6b6b', light: '#ffd6d6', textColor: '#9b2a2a', scent: '赤焰之心',
+    svgId: 'svg-fire' },
+  { key: 'earth', name: '琥珀靜土', cute: '🍯', color: '#e8a800', light: '#fff5c0', textColor: '#7a5800', scent: '琥珀靜土',
+    svgId: 'svg-earth' },
+  { key: 'metal', name: '虛白之境', cute: '🌙', color: '#7a96ae', light: '#dce8f0', textColor: '#2c4a5e', scent: '虛白之境',
+    svgId: 'svg-metal' },
+  { key: 'water', name: '深淵低語', cute: '🫧', color: '#3a7fc1', light: '#cce3f7', textColor: '#1a3d6e', scent: '深淵低語',
+    svgId: 'svg-water' },
 ];
+
+function getSVG(key, size) {
+  size = size || 48;
+  const svgs = {
+    wood:  '<svg viewBox="0 0 60 60" width="'+size+'" height="'+size+'" xmlns="http://www.w3.org/2000/svg"><ellipse cx="28" cy="32" rx="18" ry="14" fill="#a8d8a8" opacity="0.6"/><ellipse cx="36" cy="26" rx="14" ry="10" fill="#6dbe7a" opacity="0.5"/><ellipse cx="22" cy="24" rx="10" ry="13" fill="#b8e6b0" opacity="0.55"/><ellipse cx="32" cy="36" rx="12" ry="8" fill="#52a85e" opacity="0.4"/><ellipse cx="26" cy="30" rx="6" ry="9" fill="#d4f5da" opacity="0.5"/></svg>',
+    fire:  '<svg viewBox="0 0 60 60" width="'+size+'" height="'+size+'" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="16" ry="12" fill="#ffb3b3" opacity="0.6"/><ellipse cx="38" cy="26" rx="12" ry="16" fill="#ff8080" opacity="0.5"/><ellipse cx="22" cy="28" rx="14" ry="10" fill="#ffccd0" opacity="0.55"/><ellipse cx="34" cy="38" rx="10" ry="7" fill="#e85555" opacity="0.4"/><ellipse cx="28" cy="24" rx="8" ry="12" fill="#ffaaaa" opacity="0.45"/></svg>',
+    earth: '<svg viewBox="0 0 60 60" width="'+size+'" height="'+size+'" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="32" rx="17" ry="13" fill="#ffe080" opacity="0.6"/><ellipse cx="22" cy="26" rx="13" ry="11" fill="#f5c842" opacity="0.5"/><ellipse cx="38" cy="28" rx="11" ry="15" fill="#ffd060" opacity="0.55"/><ellipse cx="28" cy="38" rx="13" ry="7" fill="#e8a800" opacity="0.4"/><ellipse cx="34" cy="24" rx="7" ry="10" fill="#fff5c0" opacity="0.5"/></svg>',
+    metal: '<svg viewBox="0 0 60 60" width="'+size+'" height="'+size+'" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="30" rx="17" ry="14" fill="#c8dce8" opacity="0.65"/><ellipse cx="22" cy="26" rx="13" ry="10" fill="#a0bcd0" opacity="0.5"/><ellipse cx="38" cy="34" rx="12" ry="14" fill="#dce8f0" opacity="0.55"/><ellipse cx="30" cy="38" rx="14" ry="7" fill="#7a96ae" opacity="0.4"/><ellipse cx="26" cy="22" rx="8" ry="11" fill="#eef4f8" opacity="0.5"/></svg>',
+    water: '<svg viewBox="0 0 60 60" width="'+size+'" height="'+size+'" xmlns="http://www.w3.org/2000/svg"><ellipse cx="28" cy="34" rx="16" ry="12" fill="#80b8e8" opacity="0.6"/><ellipse cx="36" cy="24" rx="13" ry="16" fill="#3a7fc1" opacity="0.45"/><ellipse cx="22" cy="26" rx="12" ry="10" fill="#a8d0f0" opacity="0.55"/><ellipse cx="34" cy="38" rx="11" ry="7" fill="#1a5590" opacity="0.4"/><ellipse cx="30" cy="22" rx="7" ry="11" fill="#cce3f7" opacity="0.5"/></svg>',
+  };
+  return svgs[key] || '';
+}
 
 const POSITIONS = [
   { role: '此刻的印記', desc: '你現在散發的能量印跡', emoji: '✨' },
@@ -573,40 +620,56 @@ const READINGS = {
     aura:     '你現在狀態很好喔！整個人充滿活力，對什麼事都感到好奇，很適合主動去做一直想做的事，不要猶豫。',
     process:  '事情現在還在起步，還沒到收成的時候，但只要持續做，慢慢就會看到成果，別太心急。',
     block:    '你可能太執著於某件事或某個結果，導致自己卡住了。試著放鬆一點，不是每件事都要照你想的走。',
-    resolve:  '試試看「林間呼吸」這款香氛吧！清新的草木香氣能幫你靜下心來，放掉那些你一直抓著不放的事，你會發現反而更順。',
-    result:   '事情會往好的方向走，就像種子終於發芽一樣，新的開始已經在路上了，放心。',
+    resolve:  '「林間呼吸」這款香氛就是你現在需要的！清新的草木香可以幫你把那些亂七八糟的思緒清空，讓你重新找回輕鬆的感覺。很多人在用了之後發現，原本一直想不通的事，忽然就想開了。',
+    result:   '只要你願意稍微調整一下心態，放下執著，事情就會開始往好的方向走。就像種子只要給它空間，自然會發芽，你也一樣。',
   },
   fire: {
     aura:     '你現在能量超強，整個人很有衝勁，說話做事都很有感染力，這時候最適合去做需要勇氣的事。',
     process:  '事情發展很快，但也因為這樣容易情緒起伏，記得不要讓衝動代替判斷，保持一點冷靜。',
     block:    '你最近情緒可能比較浮躁，或是對某件事太焦慮，反而讓自己很耗損。先讓自己喘口氣。',
-    resolve:  '「赤焰之心」這款香氛帶有溫暖的玫瑰和辛香調，聞起來讓人穩定下來。試著把你的熱情轉成溫柔的力量，效果會更好。',
-    result:   '雖然過程有些波折，但你的努力和熱情不會白費，最後還是會發光的。',
+    resolve:  '「赤焰之心」這款香氛帶著溫暖的玫瑰和辛香，聞起來就像被人輕輕抱住一樣，讓焦躁的心慢慢定下來。很多人用了之後說，整個人變得比較有耐心，做事也更順了。',
+    result:   '只要你願意讓自己慢下來一點點，不要硬撐，結果反而會比預期的好很多。你的努力都算數，只是需要用對方式。',
   },
   earth: {
     aura:     '你現在給人一種很踏實、很安心的感覺，自己也很穩定，不容易被外在事物影響，這是很好的狀態。',
     process:  '事情在慢慢累積中，雖然看起來進展不快，但其實每一步都很紮實，基礎打好了之後會很穩。',
     block:    '你可能太擔心失去穩定感，所以不敢往前走，但這樣反而讓好機會從旁邊溜走了，試著相信自己。',
-    resolve:  '「琥珀靜土」這款香氛有大地的木質感和草本香，聞起來讓人很有安全感。帶著這份安定感，鼓起勇氣踏出那一步吧。',
-    result:   '你付出的努力都有意義，再等一下，好結果已經快來了，而且會比你想像的還要好。',
+    resolve:  '「琥珀靜土」這款香氛有大地的木質香和草本氣息，聞起來超有安全感，就像站在一片大草地上，腳踏實地的感覺。用了之後很多人說，那種莫名的不安全感少了很多，也更有勇氣去做決定。',
+    result:   '只要你願意相信自己、踏出那一步，事情就會開始鬆動。你已經準備好了，不需要再等了。',
   },
   metal: {
     aura:     '你現在腦袋很清晰，判斷力很準，是做重要決定的好時機，也很適合整理那些一直拖著沒處理的事。',
     process:  '事情現在到了一個需要做選擇的關口，你要想清楚什麼值得繼續、什麼可以放掉了。',
     block:    '你對自己太嚴格了，一直覺得還不夠好、還需要更完美，這樣會讓自己很累，也讓事情卡住。',
-    resolve:  '「虛白之境」這款香氛有淡淡的白麝香，清爽又不膩，聞起來讓人放空。練習放下那些不再適合你的，空出來的位置才能裝進新的好事。',
-    result:   '清掉雜物之後，你會覺得整個人輕鬆很多，真正重要的事情也會自然浮現出來。',
+    resolve:  '「虛白之境」這款香氛有淡淡的白麝香，清爽、乾淨、不複雜，聞起來讓腦袋瞬間放空。很多人說用完之後，那種「我還不夠好」的感覺變少了，反而更能看清楚自己真正需要什麼。',
+    result:   '只要你願意對自己寬容一點，放掉那些不必要的壓力，你會發現事情其實沒那麼難。好的結果已經在等你，放鬆去接就好。',
   },
   water: {
     aura:     '你現在直覺很敏銳，很能感受到周圍的氛圍和別人的情緒，適合靜下來聽聽自己內心真正想要什麼。',
     process:  '表面上看起來沒什麼動靜，但其實很多事情正在暗中改變，不用急，繼續觀察就好。',
     block:    '你最近是不是太在乎別人的想法，或是一直配合別人，反而忘了自己想要什麼？找回自己的重心很重要。',
-    resolve:  '「深淵低語」這款香氛帶有海洋和深木的氣息，沉靜又神秘，能幫你沉澱下來。回到自己，順著感覺走，不用強迫自己。',
-    result:   '那些曾經錯過或失去的，最後都會以另一種方式回來，一切都會慢慢到位的。',
+    resolve:  '「深淵低語」這款香氛帶著海洋和深木的氣息，沉靜、有深度，聞起來讓人很快就能靜下來。很多人用了之後說，那種「一直想討好別人」的感覺淡了，更能聽見自己內心的聲音。',
+    result:   '只要你願意把重心放回自己身上，順著自己的感覺走，那些一直等不到的事，反而會自然來找你。',
   },
 };
 
 const POSITION_KEYS = ['aura', 'process', 'block', 'resolve', 'result'];
+
+// 五行相生相剋
+const GENERATES = { wood:'fire', fire:'earth', earth:'metal', metal:'water', water:'wood' }; // 我生
+const CONTROLS  = { wood:'earth', fire:'metal', earth:'water', metal:'wood', water:'fire' };  // 我剋
+
+function calcStars(first, fifth) {
+  // 生我（第五生第一）→ 4星
+  if (GENERATES[fifth] === first) return { stars: 4, relation: '✨ 吉！能量在滋養你，一切順勢而為就好' };
+  // 我剋（第一剋第五）→ 3星
+  if (CONTROLS[first] === fifth) return { stars: 3, relation: '🌤 平順，你掌握主動權，穩穩推進就對了' };
+  // 我生（第一生第五）→ 2星
+  if (GENERATES[first] === fifth) return { stars: 2, relation: '🌥 需要多花心力，但只要調整方向就能突破' };
+  // 剋我（第五剋第一）→ 1星
+  if (CONTROLS[fifth] === first) return { stars: 1, relation: '⛅ 阻力較大，記得好好照顧自己的能量' };
+  return { stars: 2, relation: '🌤 平穩中帶著變化，保持彈性就好' };
+}
 
 let selected = [];
 let resultData = null;
@@ -655,7 +718,7 @@ function renderSelector() {
   const chips = selected.length > 0
     ? selected.map((k, i) => {
         const e = getEl(k);
-        return `<div class="seq-chip" style="background:${e.light}; color:${e.textColor};">${e.cute} ${e.name}（${POSITIONS[i].role}）</div>`;
+        return `<div class="seq-chip" style="background:${e.light}; color:${e.textColor};">${getSVG(e.key, 18)} ${e.name}（${POSITIONS[i].role}）</div>`;
       }).join('')
     : `<span class="seq-placeholder">✨ 憑直覺，選出第一個吸引你的顏色</span>`;
 
@@ -668,7 +731,7 @@ function renderSelector() {
       <button class="color-btn ${btnClass[i]} ${isDisabled ? 'selected' : ''}"
         data-key="${e.key}" ${isDisabled ? 'disabled' : ''}>
         <div class="selected-badge">${badgeNum > 0 && isDisabled ? badgeNum : '✓'}</div>
-        <span class="icon">${e.cute}</span>
+        <span class="icon">${getSVG(e.key, 40)}</span>
       </button>`;
   }).join('');
 
@@ -705,6 +768,7 @@ function buildLineMsg() {
     const pos = POSITIONS[i];
     return `${pos.emoji} ${pos.role}：${e.label}色`;
   });
+  const luckyResult = calcStars(resultData[0].key, resultData[4].key);
   const scentKey = resultData[3]?.key;
   const scentMap = { wood:'林間呼吸', fire:'赤焰之心', earth:'琥珀靜土', metal:'虛白之境', water:'深淵低語' };
   const scent = scentMap[scentKey] || '';
@@ -723,7 +787,7 @@ function renderResult() {
     return `
       <div class="result-card" style="border-left-color:${e.color};">
         <div class="result-icon-wrap" style="background:${e.light};">
-          ${e.cute}
+          ${getSVG(e.key, 44)}
         </div>
         <div class="result-body">
           <div class="result-position" style="color:${e.color};">${pos.emoji} ${pos.role}</div>
@@ -736,7 +800,7 @@ function renderResult() {
 
   const scentKey = resultData[3]?.key;
   const scentMap = { wood:'林間呼吸', fire:'赤焰之心', earth:'琥珀靜土', metal:'虛白之境', water:'深淵低語' };
-  const scentEmojiMap = { wood:'🌱', fire:'🌸', earth:'🍯', metal:'🌙', water:'🫧' };
+  const scentEmojiMap = { wood:'✦', fire:'✦', earth:'✦', metal:'✦', water:'✦' };
   const scent = scentMap[scentKey] || '';
   const scentEmoji = scentEmojiMap[scentKey] || '✨';
   const lineMsg = buildLineMsg();
@@ -747,6 +811,11 @@ function renderResult() {
       <div class="result-header">
         <div class="star-row">✨🌸✨</div>
         <h2>你的色彩能量解讀</h2>
+      </div>
+      <div class="lucky-box">
+        <div class="lucky-label">本次占卜吉凶</div>
+        <div class="lucky-stars">${'⭐'.repeat(luckyResult.stars)}${'☆'.repeat(4 - luckyResult.stars)}</div>
+        <div class="lucky-relation">${luckyResult.relation}</div>
       </div>
       <div class="result-cards">${cards}</div>
       <div class="summary-box" id="summary-box">
