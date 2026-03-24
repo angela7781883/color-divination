@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ 色彩靈占 ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wood: #6dbe7a;
+    --fire: #ff6b6b;
+    --earth: #f5c842;
+    --metal: #e0e8f0;
+    --water: #5b9bd5;
+    --wood-light: #d4f5da;
+    --fire-light: #ffd6d6;
+    --earth-light: #fff5c0;
+    --metal-light: #f0f4f8;
+    --water-light: #cce3f7;
+    --bg: #fff8f5;
+    --card-bg: #ffffff;
+    --text: #3d2b4e;
+    --text-soft: #9b88aa;
+    --shadow: rgba(180, 130, 200, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', 'Noto Sans TC', sans-serif;
+    background: #1a0e2e;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 15% 15%, rgba(109,190,122,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(255,107,107,0.15) 0%, transparent 35%),
+      radial-gradient(circle at 50% 80%, rgba(91,155,213,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(245,200,66,0.1) 0%, transparent 30%);
+  }
+
+  /* Floating bubbles background */
+  .bubble {
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.07;
+    pointer-events: none;
+    animation: floatBubble linear infinite;
+  }
+  .b1 { width: 80px; height: 80px; background: var(--fire); left: 5%; top: 20%; animation-duration: 8s; animation-delay: 0s; }
+  .b2 { width: 50px; height: 50px; background: var(--water); left: 90%; top: 50%; animation-duration: 11s; animation-delay: 2s; }
+  .b3 { width: 120px; height: 120px; background: var(--wood); left: 80%; top: 10%; animation-duration: 14s; animation-delay: 1s; }
+  .b4 { width: 40px; height: 40px; background: var(--earth); left: 15%; top: 70%; animation-duration: 9s; animation-delay: 3s; }
+  .b5 { width: 90px; height: 90px; background: var(--metal); background: #b0c8e0; left: 50%; top: 5%; animation-duration: 13s; animation-delay: 0.5s; }
+
+  @keyframes floatBubble {
+    0% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+    100% { transform: translateY(0px) scale(1); }
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeDown 0.7s ease;
+  }
+  .header .emoji-row {
+    font-size: 32px;
+    letter-spacing: 8px;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 3px;
+    line-height: 1.3;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .header h1 span {
+    color: #fbc2eb;
+    -webkit-text-fill-color: #fbc2eb;
+  }
+  .header p {
+    color: rgba(255,255,255,0.75);
+    font-size: 14px;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* Progress dots */
+  .progress-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.7s ease;
+  }
+  .step-label-row {
+    display: flex;
+    justify-content: center;
+    gap: 0px;
+    margin-bottom: 24px;
+  }
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px;
+  }
+  .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #e0d6ea;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  .dot.active {
+    transform: scale(1.4);
+    box-shadow: 0 0 0 4px rgba(161, 140, 209, 0.25);
+  }
+  .dot.done {
+    transform: scale(1.1);
+  }
+  .step-connector {
+    width: 28px;
+    height: 2px;
+    background: #e0d6ea;
+    margin-top: 6px;
+    border-radius: 2px;
+    transition: background 0.4s;
+  }
+  .step-connector.done { background: #c4b0d8; }
+  .step-name {
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 700;
+    margin-top: 6px;
+    text-align: center;
+    white-space: nowrap;
+    transition: color 0.3s;
+  }
+  .step-item.active .step-name { color: #ffffff; }
+
+  /* Instruction card */
+  .instruction-card {
+    background: white;
+    border-radius: 24px;
+    padding: 22px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px var(--shadow);
+    text-align: center;
+    animation: fadeUp 0.5s ease;
+    border: 2px solid rgba(200, 180, 220, 0.2);
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 16px;
+    color: white;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .instruction-card h2 {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .instruction-card p {
+    font-size: 13px;
+    color: var(--text-soft);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  /* Color grid */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+  .color-btn {
+    aspect-ratio: 1;
+    border-radius: 20px;
+    border: 3px solid transparent;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'Nunito', 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .color-btn:hover:not(:disabled) {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+  }
+  .color-btn:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+  .color-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  .color-btn .icon { font-size: 32px; line-height: 1; }
+  .color-btn .label { color: rgba(255,255,255,0.9); font-size: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+  .btn-wood { background: linear-gradient(135deg, #a8e6b0, #6dbe7a); }
+  .btn-fire { background: linear-gradient(135deg, #ffb3b3, #ff6b6b); }
+  .btn-earth { background: linear-gradient(135deg, #ffe980, #e8a800); }
+  .btn-metal { background: linear-gradient(135deg, #7a96ae, #4a6a82); }
+  .btn-water { background: linear-gradient(135deg, #5b9bd5, #2a5fa0); }
+
+  .color-btn.selected {
+    border-color: var(--text);
+    box-shadow: 0 0 0 3px rgba(61,43,78,0.2), 0 8px 24px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+  .selected-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    background: var(--text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: white;
+    font-weight: 900;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .color-btn.selected .selected-badge {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Selected sequence */
+  .sequence-display {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    min-height: 64px;
+    align-items: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+  .seq-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    color: rgba(0,0,0,0.65);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .seq-placeholder {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0) rotate(-10deg); opacity: 0; }
+    to { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  /* Buttons */
+  .action-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Nunito', 'Noto Sans TC', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-bottom: 12px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #c084fc, #818cf8);
+    color: white;
+    box-shadow: 0 6px 20px rgba(161, 84, 252, 0.35);
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(161, 84, 252, 0.45);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-secondary {
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.8);
+    border: 2px solid rgba(255,255,255,0.25);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    backdrop-filter: blur(8px);
+  }
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--shadow);
+  }
+
+  /* Result screen */
+  .result-screen { animation: fadeUp 0.6s ease; }
+
+  .result-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .result-header .star-row { font-size: 28px; letter-spacing: 4px; margin-bottom: 8px; color: #ffffff; }
+  .result-header h2 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .result-cards { display: flex; flex-direction: column; gap: 14px; }
+
+  .result-card {
+    background: white;
+    border-radius: 22px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 20px var(--shadow);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    border-left: 5px solid transparent;
+    animation: slideIn 0.5s ease both;
+    border: 2px solid rgba(200, 180, 220, 0.15);
+    border-left-width: 6px;
+  }
+  .result-card:nth-child(1) { animation-delay: 0.05s; }
+  .result-card:nth-child(2) { animation-delay: 0.12s; }
+  .result-card:nth-child(3) { animation-delay: 0.19s; }
+  .result-card:nth-child(4) { animation-delay: 0.26s; }
+  .result-card:nth-child(5) { animation-delay: 0.33s; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .result-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .result-body { flex: 1; }
+  .result-position {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+    opacity: 0.7;
+  }
+  .result-element {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .result-text {
+    font-size: 13px;
+    color: #6b5c7e;
+    line-height: 1.7;
+    font-weight: 600;
+  }
+
+  /* Loading */
+  .loading-screen {
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeUp 0.4s ease;
+  }
+  .loading-stars {
+    font-size: 36px;
+    letter-spacing: 8px;
+    animation: pulse 1s ease infinite alternate;
+    margin-bottom: 16px;
+  }
+  @keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
+  .loading-screen p { color: rgba(255,255,255,0.7); font-weight: 700; font-size: 15px; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Shimmer on result cards */
+  .result-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    opacity: 0;
+  }
+  .result-card { position: relative; }
+
+  .summary-box {
+    background: linear-gradient(135deg, #fceeff, #e8f0ff);
+    border-radius: 22px;
+    padding: 20px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    text-align: center;
+    border: 2px solid rgba(200, 180, 240, 0.3);
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+  .summary-box .sum-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-soft);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .purchase-block {
+    background: linear-gradient(135deg, #2d1b4e, #1a1035);
+    border-radius: 26px;
+    padding: 28px 24px;
+    margin-top: 16px;
+    text-align: center;
+    animation: fadeUp 0.6s ease 0.5s both;
+    position: relative;
+    overflow: hidden;
+  }
+  .purchase-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(192,132,252,0.2) 0%, transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(91,155,213,0.15) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .purchase-scent {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+  }
+  .purchase-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .purchase-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+    line-height: 1.8;
+    margin-bottom: 22px;
+  }
+  .line-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #06C755;
+    color: white;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-family: 'Nunito', 'Noto Sans TC', sans-serif;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 24px rgba(6,199,85,0.4);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  .line-btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 10px 30px rgba(6,199,85,0.5);
+  }
+  .line-btn:active { transform: scale(0.97); }
+  .summary-box p {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 700;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="bubble b1"></div>
+<div class="bubble b2"></div>
+<div class="bubble b3"></div>
+<div class="bubble b4"></div>
+<div class="bubble b5"></div>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="emoji-row">🌱🌸🍯🌙🫧</div>
+    <h1>色彩<span>靈占</span></h1>
+    <p>憑直覺選色，讓能量為你低語 ✨</p>
+  </div>
+
+  <!-- Main Content -->
+  <div id="app"></div>
+</div>
+
+<script>
+const ELEMENTS = [
+  { key: 'wood',  name: '林間呼吸', cute: '🌱', bigEmoji: '🌿', color: '#6dbe7a', light: '#d4f5da', textColor: '#2a5e3a', scent: '林間呼吸' },
+  { key: 'fire',  name: '赤焰之心', cute: '🌸', bigEmoji: '🌸', color: '#ff6b6b', light: '#ffd6d6', textColor: '#9b2a2a', scent: '赤焰之心' },
+  { key: 'earth', name: '琥珀靜土', cute: '🍯', bigEmoji: '🍯', color: '#e8a800', light: '#fff5c0', textColor: '#7a5800', scent: '琥珀靜土' },
+  { key: 'metal', name: '虛白之境', cute: '🌙', bigEmoji: '🌙', color: '#7a96ae', light: '#dce8f0', textColor: '#2c4a5e', scent: '虛白之境' },
+  { key: 'water', name: '深淵低語', cute: '🫧', bigEmoji: '🫧', color: '#3a7fc1', light: '#cce3f7', textColor: '#1a3d6e', scent: '深淵低語' },
+];
+
+const POSITIONS = [
+  { role: '此刻的印記', desc: '你現在散發的能量印跡', emoji: '✨' },
+  { role: '暗中流動的', desc: '正在悄然推進的力量',   emoji: '🌀' },
+  { role: '結界所在',   desc: '那道無形的阻隔之處',   emoji: '🌧' },
+  { role: '解封之鑰',   desc: '破開結界的氣息方向',   emoji: '🗝' },
+  { role: '命運的回聲', desc: '一切流動後的最終回響', emoji: '🌈' },
+];
+
+const READINGS = {
+  wood: {
+    aura:     '你現在充滿生長的力量，對新事物充滿好奇與期待，氣場向上流動，宜主動出擊。',
+    process:  '事情正在萌芽階段，充滿可能性，但也需要耐心培育，不可急於求成。',
+    block:    '執念與固執可能讓你卡關，過度追求完美或不願放手，反而阻礙了前進。',
+    resolve:  '此刻，你需要的是「林間呼吸」的氣息——清新草木與雨後森林的涼意，讓你順應自然節奏，放下控制欲，柔韌將成為你最大的力量。',
+    result:   '新的開始正在等著你，一切將如春芽破土，充滿希望與嶄新的可能。',
+  },
+  fire: {
+    aura:     '你當下能量強烈，充滿熱情與感染力，是行動力最強的時刻，適合大膽表達自己。',
+    process:  '事情發展得很快，充滿戲劇性與情緒起伏，請保持清醒，不被衝動左右。',
+    block:    '情緒過於激烈或焦慮，反而燃燒了你的耐心，此刻的衝動可能成為最大的阻礙。',
+    resolve:  '「赤焰之心」的香氣為你指路——辛香暖調與曖昧玫瑰，將你的熱情轉化為穩定的溫暖，用愛而非烈焰來推動改變，效果更深遠。',
+    result:   '你的熱情將照亮前路，雖有波折，最終依然是光芒萬丈的結局。',
+  },
+  earth: {
+    aura:     '你現在散發穩定踏實的能量，是眾人的安定力量，心中有根，不易動搖。',
+    process:  '事情正在穩步累積，雖然看似緩慢，但每一步都相當紮實，基礎正在打好。',
+    block:    '過度憂慮或不敢冒險讓你原地打轉，害怕失去安全感，反而讓機會悄悄流走。',
+    resolve:  '讓「琥珀靜土」的氣息陪伴你——大地木質與乾燥草本的安定感，幫助你信任自己已有的積累，允許自己邁出那一步，穩中求進。',
+    result:   '豐收即將到來，所有的努力與等待都有其意義，成果將比你預期的更紮實。',
+  },
+  metal: {
+    aura:     '你現在能量清澈而精準，理性與洞察力都在高峰，適合做重要決定或清理舊有負擔。',
+    process:  '事情正在進入收尾或轉折的階段，需要你清晰地判斷什麼該留、什麼該放。',
+    block:    '過於苛求完美或對自己太嚴格，讓你陷入自我批判的循環，難以前進。',
+    resolve:  '「虛白之境」的香氣輕喚你——白麝香的空靈與淡雅，引領你學會放下那些不再屬於你的，留白才有空間讓真正重要的事物降臨。',
+    result:   '經過一番剔除與沉澱，你將變得更輕盈清晰，真正重要的事物將浮現眼前。',
+  },
+  water: {
+    aura:     '你現在能量流動而深邃，直覺敏銳，內心有豐沛的感受力，適合傾聽內在聲音。',
+    process:  '事情正在暗流中流動，表面看似平靜，但深處有許多變化正在醞釀，保持覺察。',
+    block:    '迷失方向或過度迎合他人，讓你失去了自己的中心，流動過度反而失去了根。',
+    resolve:  '召喚「深淵低語」的氣息——海洋深木調的神秘沉靜，幫助你回到內心中央，像水一樣找到最自然的流向，無需強求，一切自會歸位。',
+    result:   '萬物終將回流，那些曾經失去的將以另一種形式回來，一切都在流動中圓滿。',
+  },
+};
+
+const POSITION_KEYS = ['aura', 'process', 'block', 'resolve', 'result'];
+
+let selected = [];
+let resultData = null;
+let isLoading = false;
+
+function getEl(e) { return ELEMENTS.find(x => x.key === e); }
+
+function renderApp() {
+  const app = document.getElementById('app');
+  if (isLoading) {
+    app.innerHTML = renderLoading();
+    return;
+  }
+  if (resultData) {
+    app.innerHTML = renderResult();
+    return;
+  }
+  app.innerHTML = renderSelector();
+  bindEvents();
+}
+
+function renderProgress() {
+  const steps = POSITIONS.map((p, i) => {
+    const done = i < selected.length;
+    const active = i === selected.length;
+    const el = selected[i] ? getEl(selected[i]) : null;
+    const dotColor = el ? el.color : (active ? '#c084fc' : '#e0d6ea');
+    return `
+      <div class="step-item ${active ? 'active' : ''}">
+        <div class="dot ${done ? 'done' : ''} ${active ? 'active' : ''}"
+          style="${el ? `background:${el.color};` : active ? 'background:#c084fc;' : ''}"></div>
+        <div class="step-name">${p.role}</div>
+      </div>
+      ${i < 4 ? `<div style="width:20px;height:2px;background:${i < selected.length ? '#c4b0d8' : '#e0d6ea'};border-radius:2px;margin-top:7px;"></div>` : ''}
+    `;
+  }).join('');
+  return `<div class="progress-bar" style="align-items:flex-start;">${steps}</div>`;
+}
+
+function renderSelector() {
+  const current = POSITIONS[selected.length] || POSITIONS[0];
+  const el = selected.length < 5 ? null : null;
+  const posColors = ['#c084fc','#818cf8','#f472b6','#fb923c','#34d399'];
+  const posColor = posColors[selected.length] || '#c084fc';
+
+  const chips = selected.length > 0
+    ? selected.map((k, i) => {
+        const e = getEl(k);
+        return `<div class="seq-chip" style="background:${e.light}; color:${e.textColor};">${e.cute} ${e.name}（${POSITIONS[i].role}）</div>`;
+      }).join('')
+    : `<span class="seq-placeholder">✨ 憑直覺，選出第一個吸引你的顏色</span>`;
+
+  const btnClass = ['btn-wood','btn-fire','btn-earth','btn-metal','btn-water'];
+
+  const colorBtns = ELEMENTS.map((e, i) => {
+    const isDisabled = selected.includes(e.key);
+    const badgeNum = selected.indexOf(e.key) + 1;
+    return `
+      <button class="color-btn ${btnClass[i]} ${isDisabled ? 'selected' : ''}"
+        data-key="${e.key}" ${isDisabled ? 'disabled' : ''}>
+        <div class="selected-badge">${badgeNum > 0 && isDisabled ? badgeNum : '✓'}</div>
+        <span class="icon">${e.cute}</span>
+      </button>`;
+  }).join('');
+
+  const canReveal = selected.length === 5;
+
+  return `
+    ${renderProgress()}
+    <div class="instruction-card">
+      <div class="step-num" style="background:${posColor};">${selected.length + 1 <= 5 ? selected.length + 1 : '✓'}</div>
+      <h2>${selected.length < 5 ? `選出代表「${current.role}」的顏色` : '五色已選齊 ✨'}</h2>
+      <p>${selected.length < 5 ? current.desc + '，憑直覺選色' : '準備好了嗎？讓色彩為你解讀這一刻的能量'}</p>
+    </div>
+    <div class="color-grid">${colorBtns}</div>
+    <div class="sequence-display">${chips}</div>
+    <button class="action-btn btn-primary" id="reveal-btn" ${!canReveal ? 'disabled' : ''}>
+      ${canReveal ? '✨ 解讀我的色彩能量 ✨' : `還需選 ${5 - selected.length} 個顏色`}
+    </button>
+    ${selected.length > 0 ? `<button class="action-btn btn-secondary" id="reset-btn">↩ 重新選色</button>` : ''}
+  `;
+}
+
+function renderLoading() {
+  return `
+    <div class="loading-screen">
+      <div class="loading-stars">🌿🔥🌼🌙💧</div>
+      <p>色彩能量解讀中<br>請稍候片刻...</p>
+    </div>
+  `;
+}
+
+function buildLineMsg() {
+  const lines = resultData.map((item, i) => {
+    const e = getEl(item.key);
+    const pos = POSITIONS[i];
+    return `${pos.emoji} ${pos.role}：${e.label}色`;
+  });
+  const scentKey = resultData[3]?.key;
+  const scentMap = { wood:'林間呼吸', fire:'赤焰之心', earth:'琥珀靜土', metal:'虛白之境', water:'深淵低語' };
+  const scent = scentMap[scentKey] || '';
+  return encodeURIComponent(
+    `✨ 我的色彩靈占結果\n` +
+    lines.join('\n') +
+    `\n\n🗝 解封之鑰推薦香氛：${scent}\n\n想了解更多，想訂購這款香氛 🌿`
+  );
+}
+
+function renderResult() {
+  const cards = resultData.map((item, i) => {
+    const e = getEl(item.key);
+    const pos = POSITIONS[i];
+    const readingText = READINGS[item.key][POSITION_KEYS[i]];
+    return `
+      <div class="result-card" style="border-left-color:${e.color};">
+        <div class="result-icon-wrap" style="background:${e.light};">
+          ${e.cute}
+        </div>
+        <div class="result-body">
+          <div class="result-position" style="color:${e.color};">${pos.emoji} ${pos.role}</div>
+          <div class="result-element" style="color:${e.color};">${e.cute} ${e.name}</div>
+          <div class="result-text">${item.aiText || readingText}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const scentKey = resultData[3]?.key;
+  const scentMap = { wood:'林間呼吸', fire:'赤焰之心', earth:'琥珀靜土', metal:'虛白之境', water:'深淵低語' };
+  const scentEmojiMap = { wood:'🌱', fire:'🌸', earth:'🍯', metal:'🌙', water:'🫧' };
+  const scent = scentMap[scentKey] || '';
+  const scentEmoji = scentEmojiMap[scentKey] || '✨';
+  const lineMsg = buildLineMsg();
+  const lineUrl = `https://line.me/R/oaMessage/%40622vewho/?${lineMsg}`;
+
+  return `
+    <div class="result-screen">
+      <div class="result-header">
+        <div class="star-row">✨🌸✨</div>
+        <h2>你的色彩能量解讀</h2>
+      </div>
+      <div class="result-cards">${cards}</div>
+      <div class="summary-box" id="summary-box">
+        <div class="sum-label">🌟 整體提示</div>
+        <p id="summary-text">正在生成整體解讀...</p>
+      </div>
+
+      <div class="purchase-block">
+        <div class="purchase-scent">${scentEmoji} 你的解封香氛</div>
+        <div class="purchase-name">${scent}</div>
+        <p class="purchase-desc">讓這道氣息陪你穿越結界<br>與我們說說你的靈占故事 🌙</p>
+        <a class="line-btn" href="${lineUrl}" target="_blank" rel="noopener">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" style="flex-shrink:0;">
+            <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.070 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+          </svg>
+          立即詢問 · 訂購香氛
+        </a>
+      </div>
+
+      <button class="action-btn btn-secondary" id="new-btn" style="margin-top:4px;">🔄 再占卜一次</button>
+    </div>
+  `;
+}
+
+function bindEvents() {
+  document.querySelectorAll('.color-btn:not(:disabled)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.key;
+      if (!selected.includes(key) && selected.length < 5) {
+        selected.push(key);
+        renderApp();
+      }
+    });
+  });
+
+  const revealBtn = document.getElementById('reveal-btn');
+  if (revealBtn && selected.length === 5) {
+    revealBtn.addEventListener('click', reveal);
+  }
+
+  const resetBtn = document.getElementById('reset-btn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      selected = [];
+      resultData = null;
+      renderApp();
+    });
+  }
+}
+
+async function reveal() {
+  isLoading = true;
+  resultData = selected.map(key => ({ key }));
+  renderApp();
+
+  // Try AI reading
+  try {
+    const elementStr = selected.map((k, i) => {
+      const e = getEl(k);
+      return `第${i+1}位（${POSITIONS[i].role}）：${e.name}`;
+    }).join('、');
+
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{
+          role: "user",
+          content: `你是一位神秘而溫柔的色彩靈占師。使用者選了五個顏色，順序如下：${elementStr}。
+
+位置說明：「此刻的印記」是當下氣場、「暗中流動的」是過程、「結界所在」是瓶頸、「解封之鑰」是解決方向、「命運的回聲」是結果。
+
+請針對每個位置給出 2-3 句解讀，語氣神秘而溫柔、富有靈性感，避免太過算命或命定語氣。
+特別注意：「解封之鑰」的解讀中，請自然地帶入對應顏色的香氛名稱（綠色=林間呼吸、紅色=赤焰之心、黃色=琥珀靜土、白色=虛白之境、藍色=深淵低語），以香氣意象輔助解讀。
+
+請以 JSON 格式回覆（不要加任何說明文字）：
+{
+  "readings": ["第1位解讀", "第2位解讀", "第3位解讀", "第4位解讀", "第5位解讀"],
+  "summary": "整體一段話（2-3句）的總結提示"
+}`
+        }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content.map(b => b.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    resultData = selected.map((key, i) => ({
+      key,
+      aiText: parsed.readings[i]
+    }));
+    isLoading = false;
+    renderApp();
+
+    // Insert summary
+    setTimeout(() => {
+      const sumEl = document.getElementById('summary-text');
+      if (sumEl) sumEl.textContent = parsed.summary;
+    }, 100);
+
+  } catch(e) {
+    // Fallback to built-in readings
+    resultData = selected.map(key => ({ key, aiText: null }));
+    isLoading = false;
+    renderApp();
+    setTimeout(() => {
+      const sumEl = document.getElementById('summary-text');
+      if (sumEl) {
+        const elements = selected.map(k => getEl(k).name).join(' → ');
+        sumEl.textContent = `你的色彩序列是：${elements}。這是一段關於能量流動的故事，從感知此刻的印記到命運的最終回聲，每一步都是內在力量在引導你走向最真實的自己。`;
+      }
+    }, 100);
+  }
+
+  // Bind new game button
+  setTimeout(() => {
+    const newBtn = document.getElementById('new-btn');
+    if (newBtn) {
+      newBtn.addEventListener('click', () => {
+        selected = [];
+        resultData = null;
+        renderApp();
+      });
+    }
+  }, 100);
+}
+
+// Init
+renderApp();
+</script>
+</body>
+</html>
