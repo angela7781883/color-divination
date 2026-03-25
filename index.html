@@ -103,24 +103,24 @@ line-height:2.1;letter-spacing:0.06em;margin-bottom:28px;font-weight:400;
 
 /* ── 顏色按鈕 (夢幻版) ── */
 .color-grid {
-display:flex;justify-content:center;gap:12px;flex-wrap:nowrap;margin-bottom:28px;
+display:flex;justify-content:center;gap:8px;flex-wrap:nowrap;
+margin-bottom:24px;padding:6px 2px;overflow:hidden;
 }
-.color-item { display:flex;flex-direction:column;align-items:center;gap:11px; }
+.color-item { display:flex;flex-direction:column;align-items:center;gap:8px; }
 
 .color-btn {
-width:62px;height:62px;border-radius:50%;
+width:50px;height:50px;border-radius:50%;
 border:none;cursor:pointer;position:relative;
-transition:all 0.45s cubic-bezier(.34,1.56,.64,1);outline:none;
+transition:all 0.4s cubic-bezier(.34,1.56,.64,1);outline:none;
+flex-shrink:0;
 }
 
 /* 夢幻外圈光暈環 */
 .color-btn::before {
-content:’’;position:absolute;inset:-5px;border-radius:50%;
+content:’’;position:absolute;inset:-4px;border-radius:50%;
 opacity:0;transition:opacity 0.4s ease;
-animation:ringPulse 3s ease-in-out infinite;
 }
 .color-btn:hover:not(:disabled)::before { opacity:1; }
-@keyframes ringPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 
 .color-btn::after {
 content:’’;position:absolute;inset:0;border-radius:50%;
@@ -129,9 +129,9 @@ background:rgba(255,255,255,0.18);opacity:0;transition:opacity 0.3s;
 .color-btn:hover:not(:disabled)::after{opacity:1;}
 
 .color-btn:hover:not(:disabled) {
-transform:scale(1.18) translateY(-5px);
+transform:scale(1.1) translateY(-3px);
 }
-.color-btn:disabled{opacity:0.2;cursor:not-allowed;transform:scale(0.8);}
+.color-btn:disabled{opacity:0.2;cursor:not-allowed;transform:scale(0.82);}
 
 /* 各顏色夢幻漸層（相容所有瀏覽器） */
 .color-btn[data-el=“wood”] {
