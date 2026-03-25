@@ -369,7 +369,7 @@ font-size:0.68rem;color:rgba(200,184,248,0.2);letter-spacing:0.18em;
 <div class="nebula nebula-2"></div>
 <div class="nebula nebula-3"></div>
 
-<div class="copy-toast" id="copy-toast">✦ 占卜結果已複製！貼到 LINE 傳給我吧 🌙</div>
+<div class="copy-toast" id="copy-toast">✦ 占卜結果已複製！前往賣場選購香氛吧 🌙</div>
 
 <div class="loading-overlay" id="loading">
   <div class="loading-ring"></div>
@@ -486,11 +486,36 @@ const READINGS = {
     water:'卡住的地方，可能是「想太多了」。你的大腦不停地分析、擔憂、反覆推演，反而讓決策變得猶豫不決。有時候過度思考會遮蔽掉最清醒的直覺，試著讓心安靜一下，答案會自己浮現。',
   },
   p4:{
-    wood: { text:'打開心的方式，是讓自己重新感受「生命力」。給自己一個新的起點感，告訴自己可以重新開始，不需要完美，只需要往前一步。', scents:['尤加利','薄荷','綠茶'] },
-    fire: { text:'打開心的方式，是讓自己「柔軟下來」。你不需要更多的衝勁，你現在需要的是一個讓自己溫柔融化的出口，允許情緒輕輕流過。', scents:['玫瑰','天竺葵','橙花'] },
-    earth:{ text:'打開心的方式，是讓自己「被好好照顧」。你太習慣給予了，現在輪到你接受，讓能量重新流回自己身上，滿了才能繼續給。', scents:['廣藿香','檀香','雪松'] },
-    metal:{ text:'打開心的方式，是「放下對結果的控制」。你不需要把每一個細節都安排得完美，有些最美的事，就發生在你放手的那一刻。', scents:['乳香','白麝香','冷杉'] },
-    water:{ text:'打開心的方式，是「信任自己的感知，停止反覆驗算」。你的答案早就在心底了，只需要給自己一個安靜的空間，好好聆聽自己。', scents:['海洋調','茉莉','依蘭'] },
+    wood: {
+      text:'打開心的方式，是讓自己重新感受「生命力」。給自己一個新的起點感，告訴自己可以重新開始，不需要完美，只需要往前一步。星光為你選的「晨星甦醒能量噴霧」，以清新的植物氣息喚醒你內在沉睡的衝勁，每一次深吸，都是一次重新出發的宣告。',
+      sprayName:'✧ 晨星甦醒 能量噴霧',
+      sprayDesc:'清新植物香調・重燃生命力',
+      scents:['尤加利','薄荷','綠茶'],
+    },
+    fire: {
+      text:'打開心的方式，是讓自己「柔軟下來」。你不需要更多的衝勁，你現在需要的是一個讓自己溫柔融化的出口，允許情緒輕輕流過。星光為你選的「赤焰玫光能量噴霧」，以溫柔的花香撫慰過熱的心，讓那把火從燃燒轉為暖光，照亮自己也不傷害自己。',
+      sprayName:'✧ 赤焰玫光 能量噴霧',
+      sprayDesc:'溫柔花香調・撫慰熾熱的心',
+      scents:['玫瑰','天竺葵','橙花'],
+    },
+    earth:{
+      text:'打開心的方式，是讓自己「被好好照顧」。你太習慣給予了，現在輪到你接受，讓能量重新流回自己身上，滿了才能繼續給。星光為你選的「蜜土暖陽能量噴霧」，以厚實溫暖的大地氣息托住你，提醒你感受「被照顧」的感覺，讓乾涸的能量重新充盈。',
+      sprayName:'✧ 蜜土暖陽 能量噴霧',
+      sprayDesc:'大地木質香調・重新充滿能量',
+      scents:['廣藿香','檀香','雪松'],
+    },
+    metal:{
+      text:'打開心的方式，是「放下對結果的控制」。你不需要把每一個細節都安排得完美，有些最美的事，就發生在你放手的那一刻。星光為你選的「皓月靜境能量噴霧」，以純淨清透的氣息幫你清空過多的雜念，讓腦海回到一片清明，你會發現答案早就在那裡了。',
+      sprayName:'✧ 皓月靜境 能量噴霧',
+      sprayDesc:'純淨清透香調・清空雜念歸零',
+      scents:['乳香','白麝香','冷杉'],
+    },
+    water:{
+      text:'打開心的方式，是「信任自己的感知，停止反覆驗算」。你的答案早就在心底了，只需要給自己一個安靜的空間，好好聆聽自己。星光為你選的「深淵星流能量噴霧」，以深邃神秘的氣息帶你沉入內心最深的平靜，讓思維的漩渦慢慢平息，讓最真實的自己輕聲說話。',
+      sprayName:'✧ 深淵星流 能量噴霧',
+      sprayDesc:'深邃神秘香調・找回內心的平靜',
+      scents:['海洋調','茉莉','依蘭'],
+    },
   },
   p5:{
     wood: '星光告訴你，前方是蛻變與成長的風景。只要持續滋養自己、不放棄那顆想要改變的心，破繭而出的那一刻終將到來。試著有意識地調整節奏，讓自己走得更穩、更遠，你會看見比現在開闊很多的天地。',
@@ -623,7 +648,7 @@ function buildResultText(){
   const stars = getLuck(e1,e5);
   const starStr = '★'.repeat(stars) + '☆'.repeat(4-stars);
   const names = sel.map(el=>ELEMENT_CFG[el].starName);
-  const scents = READINGS.p4[e4].scents.join('、');
+  const scents = READINGS.p4[e4].sprayName;
 
   return `✨ 光語占卜結果 ✨
 ━━━━━━━━━━━━━━
@@ -643,12 +668,12 @@ ${READINGS.p3[e3]}
 
 【${POS_SCENE[3]}】${COLOR_IMAGE[e4]}
 ${READINGS.p4[e4].text}
-✦ 推薦香氛：${scents}
+✦ 專屬能量噴霧：${scents}
 
 【${POS_SCENE[4]}】${COLOR_IMAGE[e5]}
 ${READINGS.p5[e5]}
 ━━━━━━━━━━━━━━
-想了解更多，歡迎加入光語占卜官方帳號 🌙`;
+想了解更多，歡迎前往光語占卜 LINE 賣場 🌙`;
 }
 
 function showToast(){
@@ -663,7 +688,7 @@ function copyAndOpenLine(){
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(()=>{
       showToast();
-      setTimeout(()=>window.open('https://line.me/R/ti/p/@622vewho','_blank'), 600);
+      setTimeout(()=>window.open('https://liff.line.me/1657479438-ZMYpzMaY/products/322478318','_blank'), 600);
     }).catch(()=>{
       // fallback
       fallbackCopy(text);
@@ -681,19 +706,21 @@ function fallbackCopy(text){
   ta.focus(); ta.select();
   try{ document.execCommand('copy'); showToast(); } catch(e){}
   document.body.removeChild(ta);
-  setTimeout(()=>window.open('https://line.me/R/ti/p/@622vewho','_blank'), 600);
+  setTimeout(()=>window.open('https://liff.line.me/1657479438-ZMYpzMaY/products/322478318','_blank'), 600);
 }
 
 function buildLineSection(e4){
-  const scents = READINGS.p4[e4].scents;
-  const chips = scents.map(s=>`<span class="line-chip">🌿 ${s}</span>`).join('');
+  const r = READINGS.p4[e4];
   return `
-    <div class="aroma-prompt">✦ 今日為你推薦的療癒香氛 ✦</div>
-    <div class="line-chips">${chips}</div>
-    <div class="line-sub">想要找到以上香氛的相關資訊？<br>把你的占卜結果傳給我，讓星光繼續陪著你 🌙</div>
+    <div class="aroma-prompt">✦ 星光為你指定的能量噴霧 ✦</div>
+    <div style="margin:12px 0 16px;background:rgba(200,184,248,0.1);border:1px solid rgba(200,184,248,0.28);border-radius:16px;padding:16px;text-align:center;position:relative;z-index:1">
+      <div style="font-size:1rem;font-weight:700;color:var(--lavender);letter-spacing:0.08em;margin-bottom:5px">${r.sprayName}</div>
+      <div style="font-size:0.75rem;color:var(--accent);opacity:0.82;letter-spacing:0.06em">${r.sprayDesc}</div>
+    </div>
+    <div class="line-sub">這是星光為此刻的你所選的專屬配方，<br>限量客製・每瓶都是獨一無二的你 🌙</div>
     <button class="line-btn" onclick="copyAndOpenLine()">
       ${LINE_SVG}
-      傳送結果給官方帳號
+      立即前往訂購
     </button>`;
 }
 
@@ -717,10 +744,10 @@ function renderResult(){
     if(i===3){
       const r=READINGS.p4[el];
       body=`<p>${r.text}</p>
-        <p style="margin-top:12px">試試看
-          ${r.scents.map(s=>`<span class="aroma-chip">🌿 ${s}</span>`).join('')}
-          的香氛，讓氣味輕輕帶領你找回那份平衡。
-        </p>`;
+        <div style="margin-top:16px;background:rgba(200,184,248,0.1);border:1px solid rgba(200,184,248,0.25);border-radius:16px;padding:14px 16px;text-align:center;">
+          <div style="font-size:0.95rem;font-weight:700;color:var(--lavender);letter-spacing:0.08em;margin-bottom:4px">${r.sprayName}</div>
+          <div style="font-size:0.72rem;color:var(--accent);opacity:0.8;letter-spacing:0.06em">${r.sprayDesc}</div>
+        </div>`;
     } else if(i===4){
       body=`<p>${READINGS.p5[el]}</p>`;
     } else {
