@@ -394,7 +394,10 @@ function buildTopicGrid(){
   TOPICS.forEach(t=>{
     const btn=document.createElement('button');
     btn.className='topic-btn';
-    btn.innerHTML=`<span class="topic-icon">${t.icon}</span><span class="topic-name">${t.name}</span>`;
+    btn.style.cssText='color:#c8b8f8;-webkit-text-fill-color:#c8b8f8;';
+    btn.innerHTML=`
+      <span class="topic-icon" style="color:#b8a8f0;-webkit-text-fill-color:#b8a8f0;font-style:normal;">${t.icon}</span>
+      <span class="topic-name" style="color:#c8b8f8;-webkit-text-fill-color:#c8b8f8;">${t.name}</span>`;
     btn.onclick=()=>selectTopic(t.id,btn);
     grid.appendChild(btn);
   });
@@ -403,8 +406,22 @@ buildTopicGrid();
 
 function selectTopic(id, btn){
   selectedTopic=id;
-  document.querySelectorAll('.topic-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.topic-btn').forEach(b=>{
+    b.classList.remove('selected');
+    b.style.color='#c8b8f8';
+    b.style.webkitTextFillColor='#c8b8f8';
+    b.querySelectorAll('span').forEach(s=>{
+      s.style.color='#b8a8f0';
+      s.style.webkitTextFillColor='#b8a8f0';
+    });
+  });
   btn.classList.add('selected');
+  btn.style.color='#e8e0ff';
+  btn.style.webkitTextFillColor='#e8e0ff';
+  btn.querySelectorAll('span').forEach(s=>{
+    s.style.color='#e8e0ff';
+    s.style.webkitTextFillColor='#e8e0ff';
+  });
   document.getElementById('next-btn').disabled=false;
 }
 
