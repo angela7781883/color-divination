@@ -56,8 +56,8 @@ background:rgba(255,255,255,.04);cursor:pointer;transition:all .3s;outline:none;
 }
 .topic-btn:hover{background:rgba(200,184,248,.1);border-color:rgba(200,184,248,.4);transform:translateY(-2px);}
 .topic-btn.selected{background:rgba(200,184,248,.18);border-color:var(–lavender);box-shadow:0 0 16px rgba(200,184,248,.25);}
-.topic-btn svg{width:26px;height:26px;stroke:var(–accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s;}
-.topic-btn.selected svg,.topic-btn:hover svg{stroke:var(–lavender);}
+.topic-icon{font-size:1.4rem;line-height:1;color:var(–accent);transition:color .3s;}
+.topic-btn.selected .topic-icon,.topic-btn:hover .topic-icon{color:var(–lavender);}
 .topic-name{font-size:.63rem;color:var(–lavender);font-weight:700;letter-spacing:.04em;text-align:center;line-height:1.3;}
 
 /* ── 顏色按鈕 ── */
@@ -227,21 +227,11 @@ background:rgba(255,255,255,.04);cursor:pointer;transition:all .3s;outline:none;
 <script>
 // ═══ 主題 ═══════════════════════════════════════
 const TOPICS = [
-  { id:'wealth',
-    name:'財運',
-    svg:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v1m0 8v1M9.5 9.5C9.5 8.4 10.6 8 12 8s2.5.4 2.5 1.5S13.4 11 12 11s-2.5.6-2.5 1.5S10.6 16 12 16s2.5-.4 2.5-1.5"/></svg>` },
-  { id:'love',
-    name:'感情',
-    svg:`<svg viewBox="0 0 24 24"><path d="M12 21C12 21 4 14.5 4 9a4 4 0 0 1 8 0 4 4 0 0 1 8 0c0 5.5-8 12-8 12z"/></svg>` },
-  { id:'career',
-    name:'事業',
-    svg:`<svg viewBox="0 0 24 24"><path d="M3 17l4-8 4 4 3-6 4 10"/><path d="M3 21h18"/></svg>` },
-  { id:'family',
-    name:'家運',
-    svg:`<svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9.5z"/><path d="M9 21V12h6v9"/></svg>` },
-  { id:'child',
-    name:'子女運',
-    svg:`<svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M12 14v4M9 17h6" stroke-width="1.2"/></svg>` },
+  { id:'wealth',  name:'財運', icon:'◎' },
+  { id:'love',    name:'感情', icon:'♡' },
+  { id:'career',  name:'事業', icon:'◈' },
+  { id:'family',  name:'家運', icon:'⌂' },
+  { id:'child',   name:'子女運', icon:'✿' },
 ];
 
 // ═══ 五行 ════════════════════════════════════════
@@ -401,7 +391,7 @@ function buildTopicGrid(){
   TOPICS.forEach(t=>{
     const btn=document.createElement('button');
     btn.className='topic-btn';
-    btn.innerHTML=`${t.svg}<span class="topic-name">${t.name}</span>`;
+    btn.innerHTML=`<span class="topic-icon">${t.icon}</span><span class="topic-name">${t.name}</span>`;
     btn.onclick=()=>selectTopic(t.id,btn);
     grid.appendChild(btn);
   });
