@@ -6,359 +6,152 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>光語占卜・星光解析</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --c-green: #72C472;
-  --c-red:   #E86060;
-  --c-yellow:#E8BE40;
-  --c-white: #C8C0E8;
-  --c-blue:  #4A90C8;
-  --night1:  #050818;
-  --purple:  #6a5acd;
-  --lavender:#c8b8f8;
-  --starw:   #f0eaff;
-  --accent:  #b8a8f0;
+:root{
+  --night1:#050818;--purple:#6a5acd;
+  --lavender:#c8b8f8;--starw:#f0eaff;--accent:#b8a8f0;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: 'Zen Maru Gothic', 'Nunito', sans-serif;
-  background: var(--night1);
-  color: var(--starw);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-.sky {
-  position: fixed; inset: 0;
-  background: radial-gradient(ellipse 100% 80% at 50% 0%,
-    #1a1060 0%, #0d1230 35%, #050818 70%, #020610 100%);
-  z-index: 0;
-}
-#starCanvas { position:fixed;inset:0;z-index:1;pointer-events:none; }
-.nebula {
-  position:fixed;border-radius:50%;filter:blur(90px);opacity:0.18;z-index:1;pointer-events:none;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Zen Maru Gothic','Nunito',sans-serif;background:var(--night1);color:var(--starw);min-height:100vh;overflow-x:hidden;}
+.sky{position:fixed;inset:0;background:radial-gradient(ellipse 100% 80% at 50% 0%,#1a1060 0%,#0d1230 35%,#050818 70%,#020610 100%);z-index:0;}
+#starCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
+.nebula{position:fixed;border-radius:50%;filter:blur(90px);opacity:0.18;z-index:1;pointer-events:none;}
 .nebula-1{width:520px;height:320px;top:-80px;left:-100px;background:#7c3aed;}
 .nebula-2{width:420px;height:420px;bottom:-60px;right:-120px;background:#1d4ed8;}
 .nebula-3{width:320px;height:200px;top:42%;left:28%;background:#9333ea;opacity:0.09;}
 
-/* ── App 容器 ── */
-#app {
-position:relative;z-index:2;
-max-width:500px;margin:0 auto;
-padding:24px 18px 120px;min-height:100vh;
-}
+#app{position:relative;z-index:2;max-width:500px;margin:0 auto;padding:24px 18px 100px;min-height:100vh;}
 
 /* ── 標題 ── */
-.header { text-align:center;padding:48px 0 32px; }
-.header-icon {
-font-size:2.6rem;display:block;margin-bottom:14px;
-animation:iconFloat 4.5s ease-in-out infinite;
-filter:drop-shadow(0 0 22px rgba(200,184,248,0.65));
-}
-@keyframes iconFloat{
-0%,100%{transform:translateY(0) scale(1)}
-50%{transform:translateY(-9px) scale(1.04)}
-}
-.header h1 {
-font-family:‘Zen Maru Gothic’,sans-serif;
-font-size:clamp(1.85rem,7vw,2.75rem);font-weight:700;letter-spacing:0.13em;
-background:linear-gradient(135deg,#ede0ff,#c8b8f8,#9878e8,#ede0ff);
--webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-filter:drop-shadow(0 0 18px rgba(168,144,232,0.55));line-height:1.3;
-}
-.header .subtitle {
-font-size:0.74rem;color:var(–accent);letter-spacing:0.3em;
-margin-top:11px;opacity:0.72;font-weight:400;
-}
-.divider {
-display:flex;align-items:center;gap:10px;margin:0 auto 28px;max-width:220px;
-}
-.divider::before,.divider::after {
-content:’’;flex:1;height:1px;
-background:linear-gradient(to right,transparent,rgba(200,184,248,0.38),transparent);
-}
-.divider span{color:var(–accent);font-size:13px;opacity:0.55;}
+.header{text-align:center;padding:44px 0 28px;}
+.header-icon{font-size:2.5rem;display:block;margin-bottom:12px;animation:iconFloat 4.5s ease-in-out infinite;filter:drop-shadow(0 0 22px rgba(200,184,248,0.65));}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.header h1{font-size:clamp(1.85rem,7vw,2.7rem);font-weight:700;letter-spacing:.13em;background:linear-gradient(135deg,#ede0ff,#c8b8f8,#9878e8,#ede0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 16px rgba(168,144,232,.55));line-height:1.3;}
+.header .subtitle{font-size:.74rem;color:var(–accent);letter-spacing:.3em;margin-top:10px;opacity:.72;}
+.divider{display:flex;align-items:center;gap:10px;margin:0 auto 24px;max-width:200px;}
+.divider::before,.divider::after{content:’’;flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(200,184,248,.38),transparent);}
+.divider span{color:var(–accent);font-size:13px;opacity:.55;}
+
+/* ── 步驟指示 ── */
+.step-indicator{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px;}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;transition:all .3s;}
+.step-dot.active{background:linear-gradient(135deg,#c8b8f8,#9878e8);color:#1a0a40;}
+.step-dot.done{background:rgba(200,184,248,.25);color:var(–lavender);border:1px solid rgba(200,184,248,.4);}
+.step-dot.pending{background:rgba(255,255,255,.05);color:rgba(200,184,248,.35);border:1px solid rgba(200,184,248,.15);}
+.step-line{width:32px;height:1px;background:rgba(200,184,248,.2);}
 
 /* ── 卡片 ── */
-.card {
-background:rgba(255,255,255,0.035);
-border:1px solid rgba(200,184,248,0.16);
-border-radius:26px;padding:28px 22px;margin-bottom:20px;
-backdrop-filter:blur(14px);position:relative;overflow:hidden;
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(200,184,248,.16);border-radius:24px;padding:26px 20px;margin-bottom:20px;backdrop-filter:blur(14px);position:relative;overflow:hidden;}
+.card::before{content:’’;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(200,184,248,.42),transparent);}
+.card-title{font-size:1rem;font-weight:700;color:var(–lavender);text-align:center;margin-bottom:6px;letter-spacing:.1em;}
+.card-sub{font-size:.75rem;color:var(–accent);text-align:center;margin-bottom:20px;opacity:.75;letter-spacing:.06em;}
+
+/* ── 主題按鈕 ── */
+.topic-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px;}
+.topic-btn{
+display:flex;flex-direction:column;align-items:center;gap:7px;
+padding:14px 4px 12px;border-radius:16px;border:1.5px solid rgba(200,184,248,.2);
+background:rgba(255,255,255,.04);cursor:pointer;transition:all .3s;outline:none;
 }
-.card::before {
-content:’’;position:absolute;top:0;left:0;right:0;height:1px;
-background:linear-gradient(to right,transparent,rgba(200,184,248,0.42),transparent);
-}
-.card-title {
-font-size:1rem;font-weight:700;color:var(–lavender);
-text-align:center;margin-bottom:18px;letter-spacing:0.1em;
-}
-.color-instruction {
-text-align:center;color:var(–accent);font-size:0.81rem;
-line-height:2.1;letter-spacing:0.06em;margin-bottom:28px;font-weight:400;
-}
+.topic-btn:hover{background:rgba(200,184,248,.1);border-color:rgba(200,184,248,.4);transform:translateY(-2px);}
+.topic-btn.selected{background:rgba(200,184,248,.18);border-color:var(–lavender);box-shadow:0 0 16px rgba(200,184,248,.25);}
+.topic-btn svg{width:26px;height:26px;stroke:var(–accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s;}
+.topic-btn.selected svg,.topic-btn:hover svg{stroke:var(–lavender);}
+.topic-name{font-size:.63rem;color:var(–lavender);font-weight:700;letter-spacing:.04em;text-align:center;line-height:1.3;}
+
+/* ── 顏色按鈕 ── */
+.color-instruction{text-align:center;color:var(–accent);font-size:.8rem;line-height:2;letter-spacing:.05em;margin-bottom:22px;}
 .color-instruction strong{color:var(–lavender);font-weight:700;}
-
-/* ── 顏色按鈕 (夢幻版) ── */
-.color-grid {
-display:flex;justify-content:center;gap:8px;flex-wrap:nowrap;
-margin-bottom:24px;padding:6px 2px;overflow:hidden;
-}
-.color-item { display:flex;flex-direction:column;align-items:center;gap:8px; }
-
-.color-btn {
-width:50px;height:50px;border-radius:50%;
-border:none;cursor:pointer;position:relative;
-transition:all 0.4s cubic-bezier(.34,1.56,.64,1);outline:none;
-flex-shrink:0;
-}
-
-/* 夢幻外圈光暈環 */
-.color-btn::before {
-content:’’;position:absolute;inset:-4px;border-radius:50%;
-opacity:0;transition:opacity 0.4s ease;
-}
-.color-btn:hover:not(:disabled)::before { opacity:1; }
-
-.color-btn::after {
-content:’’;position:absolute;inset:0;border-radius:50%;
-background:rgba(255,255,255,0.18);opacity:0;transition:opacity 0.3s;
-}
+.color-grid{display:flex;justify-content:center;gap:8px;flex-wrap:nowrap;margin-bottom:24px;padding:6px 2px;overflow:hidden;}
+.color-item{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.color-btn{width:50px;height:50px;border-radius:50%;border:none;cursor:pointer;position:relative;transition:all .4s cubic-bezier(.34,1.56,.64,1);outline:none;flex-shrink:0;}
+.color-btn::after{content:’’;position:absolute;inset:0;border-radius:50%;background:rgba(255,255,255,.18);opacity:0;transition:opacity .3s;}
 .color-btn:hover:not(:disabled)::after{opacity:1;}
-
-.color-btn:hover:not(:disabled) {
-transform:scale(1.1) translateY(-3px);
-}
-.color-btn:disabled{opacity:0.2;cursor:not-allowed;transform:scale(0.82);}
-
-/* 各顏色備用底色（JS 會覆蓋為漸層） */
-.color-btn[data-el=“wood”]  { background:#72c472; }
-.color-btn[data-el=“fire”]  { background:#e86060; }
-.color-btn[data-el=“earth”] { background:#e8be40; }
-.color-btn[data-el=“metal”] { background:#b0a8e0; }
-.color-btn[data-el=“water”] { background:#4a90c8; }
-.color-btn[data-el=“wood”]::before  { background:radial-gradient(circle,rgba(114,196,114,0.5) 0%,transparent 70%); }
-.color-btn[data-el=“fire”]::before  { background:radial-gradient(circle,rgba(232,96,96,0.5) 0%,transparent 70%); }
-.color-btn[data-el=“earth”]::before { background:radial-gradient(circle,rgba(232,190,64,0.5) 0%,transparent 70%); }
-.color-btn[data-el=“metal”]::before { background:radial-gradient(circle,rgba(200,184,248,0.65) 0%,transparent 70%); }
-.color-btn[data-el=“water”]::before { background:radial-gradient(circle,rgba(74,144,200,0.5) 0%,transparent 70%); }
-
-.color-btn .badge {
-position:absolute;top:-7px;right:-7px;width:24px;height:24px;border-radius:50%;
-background:linear-gradient(135deg,#e8e0ff,#a090e8);color:#1a0a40;
-font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;
-border:2px solid var(–night1);font-family:‘Nunito’,sans-serif;
-box-shadow:0 2px 8px rgba(0,0,0,0.3);
-}
-
-/* 星空顏色名稱（只有一個詞） */
-.color-label {
-font-size:0.72rem;color:var(–accent);font-weight:700;
-letter-spacing:0.06em;text-align:center;opacity:0.9;
-}
+.color-btn:hover:not(:disabled){transform:scale(1.1) translateY(-3px);}
+.color-btn:disabled{opacity:.2;cursor:not-allowed;transform:scale(.82);}
+.color-btn .badge{position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#e8e0ff,#a090e8);color:#1a0a40;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(–night1);font-family:‘Nunito’,sans-serif;}
+.color-label{font-size:.66rem;color:var(–accent);font-weight:700;letter-spacing:.04em;text-align:center;opacity:.88;}
 
 /* ── 已選序列 ── */
-.selected-sequence {
-display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-top:4px;
-}
-.seq-item {
-display:flex;flex-direction:column;align-items:center;gap:5px;
-opacity:0;transform:scale(0.5) translateY(12px);
-transition:all 0.45s cubic-bezier(.34,1.56,.64,1);
-}
+.selected-sequence{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding-top:4px;}
+.seq-item{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;transform:scale(.5) translateY(12px);transition:all .45s cubic-bezier(.34,1.56,.64,1);}
 .seq-item.visible{opacity:1;transform:scale(1) translateY(0);}
-.seq-dot {
-width:34px;height:34px;border-radius:50%;
-border:2px solid rgba(200,184,248,0.38);
-box-shadow:0 4px 14px rgba(0,0,0,0.32);
-}
-.seq-tag {
-font-size:0.6rem;color:var(–accent);opacity:0.72;font-weight:600;
-letter-spacing:0.04em;text-align:center;white-space:nowrap;
-max-width:50px;line-height:1.3;
-}
+.seq-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(200,184,248,.38);box-shadow:0 4px 12px rgba(0,0,0,.3);}
+.seq-tag{font-size:.55rem;color:var(–accent);opacity:.72;font-weight:600;letter-spacing:.03em;text-align:center;white-space:nowrap;max-width:44px;line-height:1.3;}
 
 /* ── 按鈕 ── */
-.divine-btn {
-display:block;width:100%;padding:17px;margin-top:26px;
-background:linear-gradient(135deg,rgba(106,90,205,0.32),rgba(90,74,180,0.16));
-border:1.5px solid rgba(200,184,248,0.48);border-radius:50px;
-color:var(–lavender);font-family:‘Zen Maru Gothic’,sans-serif;
-font-size:1.02rem;font-weight:700;letter-spacing:0.16em;
-cursor:pointer;transition:all 0.3s ease;outline:none;
-}
-.divine-btn:hover:not(:disabled){
-background:linear-gradient(135deg,rgba(106,90,205,0.52),rgba(90,74,180,0.32));
-box-shadow:0 0 30px rgba(168,144,232,0.32);transform:translateY(-2px);
-}
-.divine-btn:disabled{opacity:0.28;cursor:not-allowed;}
-.reset-btn {
-display:block;width:100%;padding:11px;margin-top:10px;
-background:transparent;border:1px solid rgba(200,184,248,0.18);
-border-radius:50px;color:var(–accent);font-family:‘Zen Maru Gothic’,sans-serif;
-font-size:0.8rem;font-weight:500;letter-spacing:0.12em;
-cursor:pointer;transition:all 0.3s;outline:none;opacity:0.55;
-}
-.reset-btn:hover{opacity:1;border-color:rgba(200,184,248,0.42);}
+.divine-btn{display:block;width:100%;padding:16px;margin-top:22px;background:linear-gradient(135deg,rgba(106,90,205,.32),rgba(90,74,180,.16));border:1.5px solid rgba(200,184,248,.48);border-radius:50px;color:var(–lavender);font-family:‘Zen Maru Gothic’,sans-serif;font-size:1rem;font-weight:700;letter-spacing:.16em;cursor:pointer;transition:all .3s ease;outline:none;}
+.divine-btn:hover:not(:disabled){background:linear-gradient(135deg,rgba(106,90,205,.52),rgba(90,74,180,.32));box-shadow:0 0 28px rgba(168,144,232,.32);transform:translateY(-2px);}
+.divine-btn:disabled{opacity:.28;cursor:not-allowed;}
+.reset-btn{display:block;width:100%;padding:10px;margin-top:10px;background:transparent;border:1px solid rgba(200,184,248,.18);border-radius:50px;color:var(–accent);font-family:‘Zen Maru Gothic’,sans-serif;font-size:.78rem;font-weight:500;letter-spacing:.12em;cursor:pointer;transition:all .3s;outline:none;opacity:.55;}
+.reset-btn:hover{opacity:1;border-color:rgba(200,184,248,.42);}
 
 /* ── 結果 ── */
 #result-section{display:none;}
-#result-section.show{display:block;animation:fadeUp 0.7s ease;}
+#result-section.show{display:block;animation:fadeUp .7s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 
-.star-card {
-text-align:center;padding:32px 20px 28px;margin-bottom:20px;
-background:rgba(106,90,205,0.09);border:1px solid rgba(200,184,248,0.26);
-border-radius:26px;position:relative;overflow:hidden;
-}
-.star-card::after{
-content:’’;position:absolute;inset:0;
-background:radial-gradient(ellipse at center,rgba(106,90,205,0.07),transparent 70%);
-}
-.star-row {
-font-size:2.6rem;letter-spacing:8px;display:block;margin-bottom:16px;
-filter:drop-shadow(0 0 10px rgba(200,184,248,0.45));position:relative;z-index:1;
-}
+/* 星星卡 */
+.star-card{text-align:center;padding:28px 20px 24px;margin-bottom:18px;background:rgba(106,90,205,.09);border:1px solid rgba(200,184,248,.26);border-radius:24px;position:relative;overflow:hidden;}
+.star-card::after{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(106,90,205,.07),transparent 70%);}
+.star-topic-tag{display:inline-block;background:rgba(200,184,248,.15);border:1px solid rgba(200,184,248,.3);border-radius:20px;padding:4px 16px;font-size:.72rem;color:var(–lavender);letter-spacing:.1em;font-weight:700;margin-bottom:14px;position:relative;z-index:1;}
+.star-row{font-size:2.4rem;letter-spacing:8px;display:block;margin-bottom:14px;filter:drop-shadow(0 0 10px rgba(200,184,248,.45));position:relative;z-index:1;}
 .star-filled{color:#f0e060;}
-.star-empty{color:rgba(200,184,248,0.14);}
-.star-msg{
-font-size:0.82rem;color:var(–accent);opacity:0.88;
-line-height:1.95;letter-spacing:0.06em;
-position:relative;z-index:1;
-}
+.star-empty{color:rgba(200,184,248,.14);}
+.star-msg{font-size:.8rem;color:var(–accent);opacity:.88;line-height:1.95;letter-spacing:.05em;position:relative;z-index:1;}
 
-/* 位置卡 */
-.pos-card {
-border-radius:22px;padding:22px 20px;margin-bottom:16px;
-position:relative;overflow:hidden;
-}
-.pos-card::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;}
-.pos-card.wood {background:rgba(114,196,114,0.09);border:1px solid rgba(114,196,114,0.26);}
-.pos-card.wood::before{background:linear-gradient(to right,transparent,#72C472,transparent);}
-.pos-card.fire {background:rgba(232,96,96,0.09);border:1px solid rgba(232,96,96,0.26);}
-.pos-card.fire::before{background:linear-gradient(to right,transparent,#E86060,transparent);}
-.pos-card.earth{background:rgba(232,190,64,0.09);border:1px solid rgba(232,190,64,0.26);}
-.pos-card.earth::before{background:linear-gradient(to right,transparent,#E8BE40,transparent);}
-.pos-card.metal{background:rgba(200,192,232,0.07);border:1px solid rgba(200,192,232,0.2);}
-.pos-card.metal::before{background:linear-gradient(to right,transparent,#C8C0E8,transparent);}
-.pos-card.water{background:rgba(74,144,200,0.09);border:1px solid rgba(74,144,200,0.26);}
-.pos-card.water::before{background:linear-gradient(to right,transparent,#4A90C8,transparent);}
+/* 合併解析卡 */
+.reading-card{border-radius:22px;padding:24px 20px;margin-bottom:16px;position:relative;overflow:hidden;}
+.reading-card::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;}
+.reading-card.wood{background:rgba(114,196,114,.09);border:1px solid rgba(114,196,114,.26);}
+.reading-card.wood::before{background:linear-gradient(to right,transparent,#72C472,transparent);}
+.reading-card.fire{background:rgba(232,96,96,.09);border:1px solid rgba(232,96,96,.26);}
+.reading-card.fire::before{background:linear-gradient(to right,transparent,#E86060,transparent);}
+.reading-card.earth{background:rgba(232,190,64,.09);border:1px solid rgba(232,190,64,.26);}
+.reading-card.earth::before{background:linear-gradient(to right,transparent,#E8BE40,transparent);}
+.reading-card.metal{background:rgba(200,192,232,.07);border:1px solid rgba(200,192,232,.2);}
+.reading-card.metal::before{background:linear-gradient(to right,transparent,#C8C0E8,transparent);}
+.reading-card.water{background:rgba(74,144,200,.09);border:1px solid rgba(74,144,200,.26);}
+.reading-card.water::before{background:linear-gradient(to right,transparent,#4A90C8,transparent);}
 
-.pos-header{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
-.pos-orb{
-width:40px;height:40px;border-radius:50%;flex-shrink:0;
-box-shadow:0 3px 14px rgba(0,0,0,0.32);
-}
-.pos-orb.wood {background:radial-gradient(circle at 35% 30%,#c8f0c0,#72C472 70%);}
-.pos-orb.fire {background:radial-gradient(circle at 35% 30%,#ffc0c0,#E86060 70%);}
-.pos-orb.earth{background:radial-gradient(circle at 35% 30%,#ffe89a,#E8BE40 70%);}
-.pos-orb.metal{background:radial-gradient(circle at 35% 30%,#fff,#C8C0E8 70%);}
-.pos-orb.water{background:radial-gradient(circle at 35% 30%,#a8d8ff,#4A90C8 70%);}
+.reading-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.reading-orb{width:38px;height:38px;border-radius:50%;flex-shrink:0;box-shadow:0 3px 14px rgba(0,0,0,.3);}
+.reading-meta{flex:1;}
+.reading-scene{font-size:.65rem;letter-spacing:.14em;opacity:.48;margin-bottom:2px;font-weight:500;}
+.reading-name{font-size:.95rem;font-weight:700;color:var(–lavender);letter-spacing:.06em;}
+.reading-body{font-size:.82rem;line-height:1.95;color:rgba(240,234,255,.88);letter-spacing:.04em;}
+.reading-body p{margin-bottom:10px;}
+.reading-body p:last-child{margin-bottom:0;}
 
-.pos-meta{flex:1;}
-.pos-scene{font-size:0.68rem;letter-spacing:0.15em;opacity:0.48;margin-bottom:3px;font-weight:500;}
-.pos-name{font-size:1rem;font-weight:700;color:var(–lavender);letter-spacing:0.06em;}
-.pos-body{
-font-size:0.82rem;line-height:1.95;
-color:rgba(240,234,255,0.87);letter-spacing:0.04em;font-weight:400;
-}
-.aroma-chip {
-display:inline-block;
-background:rgba(168,144,232,0.17);
-border:1px solid rgba(200,184,248,0.26);
-border-radius:20px;padding:3px 12px;
-font-size:0.72rem;color:var(–lavender);
-margin:4px 3px;letter-spacing:0.04em;font-weight:600;
-}
+/* 香氛卡（在第四個顏色解析下方） */
+.spray-box{margin-top:14px;background:rgba(200,184,248,.1);border:1px solid rgba(200,184,248,.25);border-radius:16px;padding:14px 16px;text-align:center;}
+.spray-name{font-size:.95rem;font-weight:700;color:var(–lavender);letter-spacing:.08em;margin-bottom:4px;}
+.spray-desc{font-size:.7rem;color:var(–accent);opacity:.8;letter-spacing:.05em;}
 
-/* ── LINE 區（更新版） ── */
-.line-section {
-text-align:center;padding:28px 22px;
-background:rgba(106,90,205,0.08);
-border:1px solid rgba(200,184,248,0.22);
-border-radius:22px;margin-bottom:18px;position:relative;overflow:hidden;
-}
-.line-section::before{
-content:’’;position:absolute;inset:0;
-background:radial-gradient(ellipse at center,rgba(106,90,205,0.06),transparent 70%);
-}
-.line-section .aroma-prompt {
-font-size:0.88rem;font-weight:700;color:var(–lavender);
-letter-spacing:0.08em;margin-bottom:10px;position:relative;z-index:1;
-}
-.line-chips {
-display:flex;justify-content:center;flex-wrap:wrap;gap:6px;
-margin-bottom:16px;position:relative;z-index:1;
-}
-.line-chip {
-background:rgba(200,184,248,0.15);
-border:1px solid rgba(200,184,248,0.3);
-border-radius:20px;padding:4px 14px;
-font-size:0.75rem;color:var(–lavender);
-letter-spacing:0.06em;font-weight:600;
-}
-.line-sub {
-font-size:0.76rem;color:var(–accent);
-opacity:0.78;margin-bottom:18px;
-line-height:1.85;letter-spacing:0.06em;
-position:relative;z-index:1;
-}
-.line-btn {
-display:inline-flex;align-items:center;gap:10px;background:#06C755;
-color:white;border:none;border-radius:50px;padding:13px 28px;
-font-family:‘Zen Maru Gothic’,sans-serif;font-size:0.88rem;font-weight:700;
-letter-spacing:0.08em;cursor:pointer;transition:all 0.3s;text-decoration:none;
-position:relative;z-index:1;
-}
-.line-btn:hover{
-background:#05b84e;transform:translateY(-2px);
-box-shadow:0 8px 24px rgba(6,199,85,0.35);
-}
+/* 訂購區 */
+.order-section{text-align:center;padding:26px 20px;background:rgba(106,90,205,.08);border:1px solid rgba(200,184,248,.2);border-radius:22px;margin-bottom:18px;position:relative;overflow:hidden;}
+.order-section::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(106,90,205,.06),transparent 70%);}
+.order-title{font-size:.88rem;font-weight:700;color:var(–lavender);letter-spacing:.1em;margin-bottom:6px;position:relative;z-index:1;}
+.order-sub{font-size:.76rem;color:var(–accent);opacity:.8;line-height:1.85;letter-spacing:.05em;margin-bottom:18px;position:relative;z-index:1;}
+.order-btn{display:inline-flex;align-items:center;gap:10px;background:#06C755;color:white;border:none;border-radius:50px;padding:14px 30px;font-family:‘Zen Maru Gothic’,sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:all .3s;text-decoration:none;position:relative;z-index:1;}
+.order-btn:hover{background:#05b84e;transform:translateY(-2px);box-shadow:0 8px 24px rgba(6,199,85,.35);}
 .line-logo{width:22px;height:22px;}
 
-/* ── 複製提示 Toast ── */
-.copy-toast {
-position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);
-background:rgba(30,20,60,0.95);border:1px solid rgba(200,184,248,0.35);
-border-radius:50px;padding:12px 24px;
-font-size:0.82rem;color:var(–lavender);font-weight:600;letter-spacing:0.08em;
-backdrop-filter:blur(12px);z-index:200;
-opacity:0;transition:all 0.4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;
-white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.4);
-}
+/* Toast */
+.copy-toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,20,60,.95);border:1px solid rgba(200,184,248,.35);border-radius:50px;padding:12px 24px;font-size:.8rem;color:var(–lavender);font-weight:600;letter-spacing:.08em;backdrop-filter:blur(12px);z-index:200;opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);}
 .copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ── 載入 ── */
-.loading-overlay {
-display:none;position:fixed;inset:0;background:rgba(5,8,24,0.88);
-z-index:100;align-items:center;justify-content:center;
-flex-direction:column;gap:22px;backdrop-filter:blur(6px);
-}
+/* 載入 */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(5,8,24,.88);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:22px;backdrop-filter:blur(6px);}
 .loading-overlay.show{display:flex;}
-.loading-ring {
-width:64px;height:64px;border-radius:50%;
-border:2.5px solid transparent;
-border-top-color:var(–lavender);
-border-right-color:rgba(200,184,248,0.22);
-animation:spin 1.3s linear infinite;
-}
+.loading-ring{width:64px;height:64px;border-radius:50%;border:2.5px solid transparent;border-top-color:var(–lavender);border-right-color:rgba(200,184,248,.22);animation:spin 1.3s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{
-font-size:1rem;color:var(–lavender);letter-spacing:0.25em;
-font-weight:600;animation:blink 1.8s ease-in-out infinite;
-}
-@keyframes blink{0%,100%{opacity:0.4}50%{opacity:1}}
-.footer{
-text-align:center;padding:24px 0;
-font-size:0.68rem;color:rgba(200,184,248,0.2);letter-spacing:0.18em;
-}
-@media(max-width:380px){
-.color-btn{width:44px;height:44px;}
-.color-grid{gap:6px;}
-.color-label{font-size:0.62rem;}
-}
+.loading-text{font-size:1rem;color:var(–lavender);letter-spacing:.25em;font-weight:600;animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+.footer{text-align:center;padding:24px 0;font-size:.66rem;color:rgba(200,184,248,.2);letter-spacing:.18em;}
+@media(max-width:380px){.color-btn{width:44px;height:44px;}.color-grid{gap:6px;}.color-label{font-size:.58rem;}.topic-icon{font-size:1.3rem;}.topic-name{font-size:.58rem;}}
 </style>
 
 </head>
@@ -368,9 +161,7 @@ font-size:0.68rem;color:rgba(200,184,248,0.2);letter-spacing:0.18em;
 <div class="nebula nebula-1"></div>
 <div class="nebula nebula-2"></div>
 <div class="nebula nebula-3"></div>
-
 <div class="copy-toast" id="copy-toast">✦ 占卜結果已複製！前往賣場選購香氛吧 🌙</div>
-
 <div class="loading-overlay" id="loading">
   <div class="loading-ring"></div>
   <div class="loading-text">星光解讀中…</div>
@@ -382,11 +173,33 @@ font-size:0.68rem;color:rgba(200,184,248,0.2);letter-spacing:0.18em;
     <h1>光語占卜</h1>
     <div class="subtitle">色 彩 占 卜 ・ 星 光 解 析</div>
   </div>
-
   <div class="divider"><span>✦</span></div>
 
-  <div class="card" id="select-card">
-    <div class="card-title">✦ 跟著直覺，選出你的五個顏色 ✦</div>
+  <!-- 步驟指示 -->
+
+  <div class="step-indicator" id="step-indicator">
+    <div class="step-dot active" id="dot1">1</div>
+    <div class="step-line"></div>
+    <div class="step-dot pending" id="dot2">2</div>
+    <div class="step-line"></div>
+    <div class="step-dot pending" id="dot3">✦</div>
+  </div>
+
+  <!-- 第一步：選主題 -->
+
+  <div class="card" id="step1-card">
+    <div class="card-title">✦ 你想了解什麼？✦</div>
+    <div class="card-sub">選擇此刻最想看見答案的方向</div>
+    <div class="topic-grid" id="topic-grid"></div>
+    <button class="divine-btn" id="next-btn" disabled onclick="goStep2()">
+      ✦ 下一步，選擇你的顏色 ✦
+    </button>
+  </div>
+
+  <!-- 第二步：選顏色 -->
+
+  <div class="card" id="step2-card" style="display:none">
+    <div class="card-title">✦ 跟著直覺，選出五個顏色 ✦</div>
     <div class="color-instruction">
       閉上眼睛深呼吸一下<br>
       再睜開眼，<strong>按照直覺的順序</strong>點選顏色<br>
@@ -397,15 +210,14 @@ font-size:0.68rem;color:rgba(200,184,248,0.2);letter-spacing:0.18em;
     <button class="divine-btn" id="divine-btn" disabled onclick="startDivination()">
       ✦ 讓星光告訴你答案 ✦
     </button>
-    <button class="reset-btn" onclick="resetAll()">↺ 重新選擇</button>
+    <button class="reset-btn" onclick="resetAll()">↺ 重新開始</button>
   </div>
 
+  <!-- 結果 -->
+
   <div id="result-section">
-    <div class="star-card" id="star-card"></div>
-    <div id="pos-cards"></div>
-    <div class="line-section" id="line-section">
-      <!-- 由 JS 依第4個顏色動態產生 -->
-    </div>
+    <div id="reading-card-container"></div>
+    <div class="order-section" id="order-section"></div>
     <button class="reset-btn" onclick="resetAll()" style="margin-bottom:24px;">↺ 再占一次</button>
   </div>
 
@@ -413,49 +225,53 @@ font-size:0.68rem;color:rgba(200,184,248,0.2);letter-spacing:0.18em;
 </div>
 
 <script>
-// ═══ DATA ══════════════════════════════════════════
-
-// 五行顏色設定 — 星空意象名（單一詞）
-const ELEMENT_CFG = {
-  wood:  { starName:'翠星',  color:'#72C472', light:'#a8e4a0' },
-  fire:  { starName:'赤矅',  color:'#E86060', light:'#f4a0a0' },
-  earth: { starName:'金曜',  color:'#E8BE40', light:'#fce488' },
-  metal: { starName:'皓月',  color:'#C8C0E8', light:'#ffffff'  },
-  water: { starName:'深淵',  color:'#4A90C8', light:'#80c8f8' },
-};
-
-const ELEMENTS_ORDER = ['wood','fire','earth','metal','water'];
-
-// 情感語境位置名
-const POS_SCENE = [
-  '此刻的你',
-  '心裡的漣漪',
-  '卡住的地方',
-  '打開心的方式',
-  '星光指向你的地方',
+// ═══ 主題 ═══════════════════════════════════════
+const TOPICS = [
+  { id:'wealth',
+    name:'財運',
+    svg:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v1m0 8v1M9.5 9.5C9.5 8.4 10.6 8 12 8s2.5.4 2.5 1.5S13.4 11 12 11s-2.5.6-2.5 1.5S10.6 16 12 16s2.5-.4 2.5-1.5"/></svg>` },
+  { id:'love',
+    name:'感情',
+    svg:`<svg viewBox="0 0 24 24"><path d="M12 21C12 21 4 14.5 4 9a4 4 0 0 1 8 0 4 4 0 0 1 8 0c0 5.5-8 12-8 12z"/></svg>` },
+  { id:'career',
+    name:'事業',
+    svg:`<svg viewBox="0 0 24 24"><path d="M3 17l4-8 4 4 3-6 4 10"/><path d="M3 21h18"/></svg>` },
+  { id:'family',
+    name:'家運',
+    svg:`<svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9.5z"/><path d="M9 21V12h6v9"/></svg>` },
+  { id:'child',
+    name:'子女運',
+    svg:`<svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M12 14v4M9 17h6" stroke-width="1.2"/></svg>` },
 ];
 
-// 顏色意象名（解析卡副標）
-const COLOR_IMAGE = {
-  wood:  '翠星・初春第一抹新綠',
-  fire:  '赤矅・燃燒的熱情之光',
-  earth: '金曜・大地溫柔的懷抱',
-  metal: '皓月・夜空最靜的清輝',
-  water: '深淵・流動的沉靜智慧',
+// ═══ 五行 ════════════════════════════════════════
+const ELEMENT_CFG = {
+  wood:  { starName:'翠星', color:'#72C472', light:'#c8f0c0' },
+  fire:  { starName:'赤矅', color:'#E86060', light:'#ffc0c0' },
+  earth: { starName:'金曜', color:'#E8BE40', light:'#ffe89a' },
+  metal: { starName:'皓月', color:'#C8C0E8', light:'#ffffff'  },
+  water: { starName:'深淵', color:'#4A90C8', light:'#a8d8ff' },
+};
+const ELEMENTS_ORDER = ['wood','fire','earth','metal','water'];
+
+const BTN_STYLES = {
+  wood:  { bg:'#72c472', from:'#c8f0c0', shadow:'rgba(114,196,114,0.5)'  },
+  fire:  { bg:'#e86060', from:'#ffc0c0', shadow:'rgba(232,96,96,0.5)'    },
+  earth: { bg:'#e8be40', from:'#ffe89a', shadow:'rgba(232,190,64,0.55)'  },
+  metal: { bg:'#b0a8e0', from:'#ffffff', shadow:'rgba(200,184,248,0.65)' },
+  water: { bg:'#4a90c8', from:'#a8d8ff', shadow:'rgba(74,144,200,0.5)'   },
 };
 
-// 五行相生相剋
-const generates = { wood:'fire',fire:'earth',earth:'metal',metal:'water',water:'wood' };
-const restricts = { wood:'earth',fire:'metal',earth:'water',metal:'wood',water:'fire' };
-
-function getLuck(me, out) {
-  if (generates[out] === me) return 4;
-  if (restricts[me]  === out) return 3;
-  if (generates[me]  === out) return 2;
-  if (restricts[out] === me)  return 1;
+// ═══ 五行相生相剋 ════════════════════════════════
+const generates = {wood:'fire',fire:'earth',earth:'metal',metal:'water',water:'wood'};
+const restricts = {wood:'earth',fire:'metal',earth:'water',metal:'wood',water:'fire'};
+function getLuck(me,out){
+  if(generates[out]===me) return 4;
+  if(restricts[me]===out) return 3;
+  if(generates[me]===out) return 2;
+  if(restricts[out]===me) return 1;
   return 3;
 }
-
 const STAR_MSG = {
   4:'能量相輔相成，你與所渴望的結果之間有著天然的默契。此刻的每一份努力都格外有力量，星光正溫柔地護送你前進。',
   3:'你掌握著自己生命的主導權，只要方向清晰，你有能力把想要的帶到身邊。保持清醒的心，就是你最好的指引。',
@@ -463,146 +279,168 @@ const STAR_MSG = {
   1:'此刻有些阻力悄悄流動，但這從不是終點。覺察本身就是最有力量的保護，帶著溫柔的清醒繼續走，新的風景就在調整之後。',
 };
 
-const READINGS = {
-  p1:{
-    wood: '此刻你的內心像一棵正在破土的小芽，帶著對改變的渴望與向上的衝勁。你對生活有著敏銳的感受力，正在尋找屬於自己的方向，這股向前的心意是你最真實也最美麗的樣子。',
-    fire: '此刻你的能量是飽滿而外放的，就像一顆閃耀的星，周圍的人都能感受到你的溫度。你正處於充滿熱情的狀態，光芒由內而外散發，這份真誠的熱度是你此刻最珍貴的禮物。',
-    earth:'此刻的你像大地一樣溫暖而穩定，用包容接納著周遭的一切。你散發出一種讓人安心的氣息，這種踏實感是你這段時間最核心的能量，也是你帶給身邊人最深刻的美好。',
-    metal:'此刻你的狀態是內斂而清澈的，像月光靜靜灑落，不張揚卻深邃。你正在進行某種內在的沉澱與整理，靜默中有著難以言說的力量，你比自己想像中更清楚自己需要什麼。',
-    water:'此刻你的能量如深水般悠然流動，表面平靜，內心卻有豐富的世界在運轉。你現在高度敏銳、靈感湧現，直覺是你最強的武器，那些浮現在心頭的感知都值得被你認真聆聽。',
+// ═══ 香氛噴霧 ════════════════════════════════════
+const SPRAY = {
+  wood:  { name:'✧ 晨星甦醒 能量噴霧', desc:'清新植物香調・重燃生命力' },
+  fire:  { name:'✧ 赤焰玫光 能量噴霧', desc:'溫柔花香調・撫慰熾熱的心' },
+  earth: { name:'✧ 蜜土暖陽 能量噴霧', desc:'大地木質香調・重新充滿能量' },
+  metal: { name:'✧ 皓月靜境 能量噴霧', desc:'純淨清透香調・清空雜念歸零' },
+  water: { name:'✧ 深淵星流 能量噴霧', desc:'深邃神秘香調・找回內心的平靜' },
+};
+
+// ═══ 顏色意象名 ══════════════════════════════════
+const COLOR_IMAGE = {
+  wood: '翠星・初春第一抹新綠',
+  fire: '赤矅・燃燒的熱情之光',
+  earth:'金曜・大地溫柔的懷抱',
+  metal:'皓月・夜空最靜的清輝',
+  water:'深淵・流動的沉靜智慧',
+};
+
+// ═══ 五行中文名（解析用）══════════════════════════
+const EL_NAME = {
+  wood:'木',fire:'火',earth:'土',metal:'金',water:'水'
+};
+const EL_TRAIT = {
+  wood: { excess:'過於追求生長與突破，總在向前衝卻少了紮根的力量', lack:'缺少向上的動力與彈性，容易因停滯而感到迷失' },
+  fire: { excess:'情緒與熱情過於旺盛，容易燃燒殆盡卻難以為自己留存溫度', lack:'缺少熱情與行動的光，容易感到冷漠、提不起勁' },
+  earth: { excess:'承擔過多、包容過重，能量不斷流失卻難以停止給予', lack:'缺少穩定與承托的力量，容易感到漂浮、無所依靠' },
+  metal: { excess:'思慮過於精密、要求過於嚴格，讓自己活在完美的枷鎖中', lack:'缺少清晰與決斷的能量，容易優柔寡斷、難以放下' },
+  water: { excess:'思緒流動過盛、感受過於敏銳，容易陷入無止境的推演與焦慮', lack:'缺少流動與洞察的智慧，容易固執己見、看不見出口' },
+};
+
+// 第4顏色對應的調整引導語
+const EL_GUIDE = {
+  wood: '運用木氣的清新生長能量來調整，讓自己重新感受到輕盈向前的力量，那些卡住的地方將會開始鬆動，你渴望的改變也會一步一步真實地發生。',
+  fire: '運用火氣的溫暖熱情能量來調整，讓自己重新點燃那份行動的勇氣與溫度，事情將從這一刻開始真正地燃燒起來，你期待的突破，比你想的更近。',
+  earth:'運用土氣的穩定承托能量來調整，讓自己重新找回踏實而充盈的狀態，能量穩了，那些一直在等待的豐盛與安穩，才能真正落地在你的生命裡。',
+  metal:'運用金氣的清明決斷能量來調整，讓自己清空雜念、找回精準的判斷力，當眼光變得清晰，前方的路將豁然開朗，你一直想要的答案，就在那份清醒裡。',
+  water:'運用水氣的流動智慧能量來調整，讓自己重新找回那份靈活而深邃的感知力，當能量開始流動，很多過去看似無解的困局，都將在流動中找到出口。',
+};
+const READING_MAP = {
+  wealth:{
+    wood:'你對財富有著熱切的渴望，卻感覺機會總是若即若離，努力了很久卻看不到真正的突破。這是因為你的能量過於消耗在當下的緊繃與壓力中，讓你失去了本該有的生長力與向前的彈性。當一個人缺少木的能量，財運的種子雖然埋下，卻少了那股讓它破土而出的力道。你需要的，是重新喚醒內在那份輕盈的行動力，讓能量從根部開始流動，豐盛才能真正長出來。',
+    fire:'你在財運上的努力是踏實的，但有時候感覺做了很多卻缺少那把讓事情真正燃燒起來的火。你不是不夠努力，而是你的能量太壓抑、太保守，讓機會在你面前卻難以點燃。缺少火的能量，財運容易停滯在「準備好了卻不敢出手」的狀態。你需要的是重新燃起那份敢於嘗試的熱度，讓能量帶著勇氣向外流動，財富的門才會真正打開。',
+    earth:'你在財運上的心力消耗很大，努力、付出、承擔，卻總感覺收穫沒有跟上。這是因為你的能量長期流失，根基開始動搖，讓財運失去了穩固的土壤可以依靠。缺少土的能量，賺進來的容易留不住，機會也難以好好紮根。你需要的是讓能量重新回到穩定，讓自己有一片真正踏實的土地，財富才能在你的生命裡真正落地生根。',
+    metal:'你在財運上的思路很清晰，但你發現自己越想越複雜，越分析越不知道下一步在哪裡，讓很多機會就在猶豫中溜走。這是因為你缺少金的清明能量，讓判斷變得模糊、決策變得遲疑。當你找回那份清晰而果斷的力量，把雜念清空、讓眼光變得精準，你會發現財運的路其實一直都在，只是等你清醒過來看見它。',
+    water:'你在財運上有著認真的行動，卻常常感覺像在用力划水卻看不見方向。這是因為你缺少水的流動智慧，讓你在固定的思維裡打轉，錯過了真正適合你的財運入口。水的能量讓人知道何時該轉彎、何時該順勢而為。當你補足這份流動的感知力，你將開始看見財富本來就在流向你，只需要你放開手，讓它自然進來。',
   },
-  p2:{
-    wood: '你心裡正漾著一圈圈「想要成長」的漣漪，有些事還在萌芽階段，需要耐心等待慢慢展開。別急著要看到成果，根紮得越深，未來能開展的空間就越大，你正在最重要的累積期。',
-    fire: '你心裡正燃著一把火，事情快速推進，情緒也起伏激烈。這股熱情帶來強大的推力，但也容易在衝勁中消耗過多。記得在燃燒的同時，也讓自己有機會喘一口氣、補充一下能量。',
-    earth:'你心裡的漣漪是沉澱的、是積累的。表面看似平靜，其實你正在為未來打地基，每一份用心的付出都在悄悄生根。這個階段最需要你的耐心，慢慢來，比較快。',
-    metal:'你心裡正在進行一種「去蕪存菁」的整理，割捨、放下、重新定義，是這段時間反覆出現的功課。斷開那些不再適合你的連結，反而能讓真正重要的事情變得更加清晰。',
-    water:'你心裡的漣漪是流動的、是適應的。環境在悄悄改變，你也在不斷調整自己的方向。就像水一樣順勢而流，不強行改變，但終究會找到最適合自己的出口。',
+  love:{
+    wood:'你在感情裡是真心付出的，但有時候感覺自己一直在等待、一直在原地，那份愛好像生長很慢，甚至停滯了。這是因為你的能量失衡，缺少木的生長與主動，讓愛停在了還沒有說出口、還沒有跨出去的地方。感情需要有人帶著輕盈的勇氣去推動它往前。當你重新找回那股主動而柔軟的力量，這段感情將開始以你喜歡的方式，慢慢長出來。',
+    fire:'你在感情裡很穩重、很體貼，但有時候感覺關係缺少了一點溫度，彼此像是習慣了對方卻少了那份讓人心跳的熱度。這是因為你的能量裡缺少火的光與熱，讓感情漸漸沉靜到有些冷淡。愛需要溫度來維持生命力。當你重新點燃那份真誠的熱情，讓自己在感情裡也敢於表達、敢於感受，你們之間的連結將重新變得有光、有溫度、有未來。',
+    earth:'你在感情裡投入了很多，卻常常感覺自己給的多、接受的少，久了開始感到疲憊與不安。這是因為你的能量缺少土的穩定與承托，讓你在感情裡沒有真正的根，始終有一種漂浮、不踏實的感覺。愛需要一片土地讓它紮根。當你找回那份穩定自己的力量，讓感情建立在真實的安全感上，你們之間的連結才會長得深、長得久。',
+    metal:'你在感情裡很細心，也很在乎，但有時候你會想太多、分析太多，讓自己在感情裡變得猶豫、難以完全放開。這是因為你缺少金的清晰能量，讓你在愛裡總是多了一道防線、少了一份真正的敞開。當你找回那份清明而果斷的力量，讓心變得清透、讓愛變得乾淨，你將驚訝地發現，真正的深刻連結，其實一直就在你願意放下防衛的那一刻開始。',
+    water:'你在感情裡有著真誠的心意，但有時候感覺自己很難真正流動起來，要麼太執著於某個期待，要麼太難從過去的感受中走出來。這是因為你缺少水的流動力，讓感情的能量卡在了某個地方。愛需要流動才能帶來新的可能。當你重新找回那份靈活而敏銳的感知，讓心隨著感受自然流動，你將走進一段讓你真正感到自由又深刻的愛。',
   },
-  p3:{
-    wood: '卡住的地方，可能是「想快點看到結果」的焦慮感。你對成長有強烈的渴望，卻發現現實的節奏比想像中慢，這種落差讓你有點喘不過氣。試著允許自己慢下來，根系穩了，自然會長高。',
-    fire: '卡住的地方，可能是「情緒太滿了」。你的熱情是最珍貴的優勢，但有時候這把火也會讓你做出衝動的決定，或在關係中消耗了彼此。稍微降溫一下，讓清醒的自己來引導行動。',
-    earth:'卡住的地方，可能是「承擔了太多別人的重量」。你習慣成為讓大家依靠的存在，卻不知不覺把自己的能量掏空了。是時候練習說「我現在需要一點空間」，照顧自己不是自私。',
-    metal:'卡住的地方，可能是「對完美的過度追求」。太高的標準讓你很難對現況感到滿意，完美主義在無形中成了前進的枷鎖。試著允許「夠好就好」，那個美麗的本來就已經在那裡了。',
-    water:'卡住的地方，可能是「想太多了」。你的大腦不停地分析、擔憂、反覆推演，反而讓決策變得猶豫不決。有時候過度思考會遮蔽掉最清醒的直覺，試著讓心安靜一下，答案會自己浮現。',
+  career:{
+    wood:'你在事業上一直很努力，但有時候感覺像是使勁卻踩不到地，方向很多卻沒有一個讓你真正能長出力量。這是因為你的能量失衡，缺少木的生命力與向前的動能，讓你的事業像是根系還沒紮穩就急著往上長。當你重新找回那份踏實而有彈性的行動力，讓自己先紮根、再生長，你的事業將以更穩固的姿態，走向真正屬於你的高度。',
+    fire:'你在事業上有著清晰的思路和紮實的基礎，但有時候感覺缺少那一把讓事情真正燃燒起來的火候，計畫做了卻難以真正點燃，機會來了卻少了那股敢往前衝的熱度。缺少火的能量，事業容易陷入「準備好卻遲遲不出手」的窘境。當你補足這份熱情與行動的光，你的事業將重新點燃，那個你一直期待的突破，近了。',
+    earth:'你在事業上是個不折不扣的實力派，但有時候你的付出沒有被看見，或者總感覺自己在為別人的目標消耗能量，卻忘了好好建立自己的根基。缺少土的穩定力，事業容易東做西做卻沒有真正的中心。你需要的是讓自己重新落地，把能量收回來，建立一個屬於你的穩固核心，事業的豐盛才能真正在你的生命裡長出來。',
+    metal:'你在事業上努力而投入，但有時候感覺自己陷在太多的雜事和雜念裡，看不清真正重要的方向，讓能量消耗在不該消耗的地方。缺少金的清明，事業容易失去焦點。當你找回那份清晰而精準的判斷力，把不必要的都放下，把眼光聚焦在最核心的事情上，你的事業將以一種讓你自己都驚訝的速度，開始真正地前進。',
+    water:'你在事業上有想法、有努力，但有時候感覺自己太硬、太固執，明明環境在變卻難以跟著轉向，讓機會從旁邊流過去。缺少水的流動智慧，事業容易卡在舊的方式裡。當你找回那份柔軟而靈活的適應力，讓自己能在變化中看見機會、順勢而動，你的事業將以最省力也最有效率的方式，走到你想去的地方。',
   },
-  p4:{
-    wood: {
-      text:'打開心的方式，是讓自己重新感受「生命力」。給自己一個新的起點感，告訴自己可以重新開始，不需要完美，只需要往前一步。星光為你選的「晨星甦醒能量噴霧」，以清新的植物氣息喚醒你內在沉睡的衝勁，每一次深吸，都是一次重新出發的宣告。',
-      sprayName:'✧ 晨星甦醒 能量噴霧',
-      sprayDesc:'清新植物香調・重燃生命力',
-      scents:['尤加利','薄荷','綠茶'],
-    },
-    fire: {
-      text:'打開心的方式，是讓自己「柔軟下來」。你不需要更多的衝勁，你現在需要的是一個讓自己溫柔融化的出口，允許情緒輕輕流過。星光為你選的「赤焰玫光能量噴霧」，以溫柔的花香撫慰過熱的心，讓那把火從燃燒轉為暖光，照亮自己也不傷害自己。',
-      sprayName:'✧ 赤焰玫光 能量噴霧',
-      sprayDesc:'溫柔花香調・撫慰熾熱的心',
-      scents:['玫瑰','天竺葵','橙花'],
-    },
-    earth:{
-      text:'打開心的方式，是讓自己「被好好照顧」。你太習慣給予了，現在輪到你接受，讓能量重新流回自己身上，滿了才能繼續給。星光為你選的「蜜土暖陽能量噴霧」，以厚實溫暖的大地氣息托住你，提醒你感受「被照顧」的感覺，讓乾涸的能量重新充盈。',
-      sprayName:'✧ 蜜土暖陽 能量噴霧',
-      sprayDesc:'大地木質香調・重新充滿能量',
-      scents:['廣藿香','檀香','雪松'],
-    },
-    metal:{
-      text:'打開心的方式，是「放下對結果的控制」。你不需要把每一個細節都安排得完美，有些最美的事，就發生在你放手的那一刻。星光為你選的「皓月靜境能量噴霧」，以純淨清透的氣息幫你清空過多的雜念，讓腦海回到一片清明，你會發現答案早就在那裡了。',
-      sprayName:'✧ 皓月靜境 能量噴霧',
-      sprayDesc:'純淨清透香調・清空雜念歸零',
-      scents:['乳香','白麝香','冷杉'],
-    },
-    water:{
-      text:'打開心的方式，是「信任自己的感知，停止反覆驗算」。你的答案早就在心底了，只需要給自己一個安靜的空間，好好聆聽自己。星光為你選的「深淵星流能量噴霧」，以深邃神秘的氣息帶你沉入內心最深的平靜，讓思維的漩渦慢慢平息，讓最真實的自己輕聲說話。',
-      sprayName:'✧ 深淵星流 能量噴霧',
-      sprayDesc:'深邃神秘香調・找回內心的平靜',
-      scents:['海洋調','茉莉','依蘭'],
-    },
+  family:{
+    wood:'你為這個家付出了很多，但有時候感覺家人之間的關係像是少了一股生氣，連結有些沉滯，說不清楚哪裡出了問題，只是感覺家的能量不夠流動。這是因為家中缺少木的生長力與主動的連結，讓關係停在了習慣的位置。當你重新帶入那份輕盈而主動的溫度，讓家人之間有新的交流和新的可能，家的能量將重新活起來，那份你一直渴望的家的溫度，會慢慢回來。',
+    fire:'你的家是穩定的、是踏實的，但有時候感覺家裡的氣氛有些沉悶，少了那份讓人想要回家的溫度和活力。缺少火的光與熱，家容易變得例行公事、少了真正的連結與生命力。當你重新為家帶入那份溫暖的熱度，一個主動的關心、一頓用心的飯，都能讓家的能量重新燃起，那份讓每個人都感到被愛的家，就在你的一個行動裡。',
+    earth:'你在家裡承擔著巨大的重量，默默地支撐著一切，卻常常感覺自己快要撐不住，但又找不到可以放下的方式。缺少土的穩定補充，你的能量在不斷流失。一個真正豐盛的家，需要你也被好好照顧。當你允許自己接受家人的支持，讓給予和接受在家裡都能流動，整個家的能量將因為你的充盈而變得更穩固、更溫暖。',
+    metal:'家人之間有些話沒有說清楚，有些誤解累積了很久，讓家的氛圍有些緊繃或疏遠，卻不知道從哪裡開始改變。缺少金的清明，家容易陷在說不清、理還亂的狀態。當你找回那份清晰而溫柔的溝通力，讓每個人都有機會說出真實的感受，那些積累已久的距離，將在清明的對話中慢慢消融，家重新變得清透、輕盈。',
+    water:'你對家人有著深深的感情，但有時候這份感情讓你過於執著於某個期待的樣子，讓家反而少了一點呼吸的空間。缺少水的流動，家容易因為太多的堅持而變得僵硬。當你找回那份溫柔流動的包容力，讓每個家人都有空間做自己，你們之間的關係將變得更自然、更深刻，那份真正讓人想要回家的溫度，就這樣流動起來了。',
   },
-  p5:{
-    wood: '星光告訴你，前方是蛻變與成長的風景。只要持續滋養自己、不放棄那顆想要改變的心，破繭而出的那一刻終將到來。試著有意識地調整節奏，讓自己走得更穩、更遠，你會看見比現在開闊很多的天地。',
-    fire: '星光告訴你，前方是光芒與影響力的風景。你天生有點燃他人熱情的能力，這段時間的磨練讓你的光更穩定、更持久。試著適當地收放自己的能量，你的熱情將成為真正溫暖這個世界的一道光。',
-    earth:'星光告訴你，前方是豐盛與安穩的風景。你所付出的一切都不會消失，大地的回饋是厚實而深遠的。試著好好照顧自己、為自己建立健康的界線，你將收穫一份扎實而長久、讓人心滿意足的幸福。',
-    metal:'星光告訴你，前方是清晰與精準的風景。經過這段整理的過程，你會越來越清楚自己真正要的是什麼。試著練習放下，反而能讓你握住真正珍貴的事物，展現出沉靜而深刻的生命力量。',
-    water:'星光告訴你，前方是流動與智慧的風景。當你不再抗拒變化，而是學著順勢而行，你會發現水的力量有多強大——看似柔軟，卻能穿越所有阻礙。信任你的直覺與感知，你將抵達意想不到的美麗地方。',
+  child:{
+    wood:'你對孩子有著滿滿的愛與期待，但有時候感覺親子之間的連結不夠流動，孩子和你之間有些話說不出口，或者孩子的成長方向讓你擔憂。這是因為關係中缺少木的生長空間，讓孩子難以在你面前自然地展開。當你重新為這段關係帶入那份輕盈而接納的力量，讓孩子感受到被支持而非被期待，他們將帶著真正的力量生長，你們之間的連結也會越來越深。',
+    fire:'你對孩子的愛是穩定而深刻的，但有時候親子之間缺少了一點溫度，感覺彼此都在各自的世界裡，少了真正有溫度的交流。缺少火的連結，親子關係容易變得例行而疏遠。當你主動帶入一點熱情和活力，讓孩子感受到你真正想要靠近他們的心意，那份被你一直珍視的親子溫度，將重新在你們之間燃起。',
+    earth:'你為孩子做了很多，也承擔了很多，但有時候感覺這份付出讓你精疲力竭，卻還是擔心做得不夠。缺少土的穩定補充，你的能量在不斷被消耗。孩子需要的，是一個能量充盈的你，而不是一個耗盡自己的你。當你好好照顧自己，讓自己先穩定下來，你給予孩子的愛將更有品質，你們之間的關係也將因此變得更輕鬆、更真實。',
+    metal:'你對孩子有著清晰的想法，希望他們走在對的路上，做對的選擇。但有時候這份清晰讓孩子感受到的是壓力而非支持，讓他們在你面前難以放鬆地做自己。當你找回那份清明而柔軟的愛，讓孩子知道你愛的是他這個人，而不是他的表現，他們將在安全感中展開，那份你一直期待的親子連結，也將真正地到來。',
+    water:'你對孩子有著深刻的情感感知，能感受到他們細微的情緒，也總在他們最需要的時候出現。但有時候這份感知太深，讓你們的情緒融合在一起，彼此都難以呼吸。當你找回那份流動而不沉溺的智慧，給孩子空間、也給自己空間，你們之間的愛將變得更輕盈，更能真正滋養彼此。',
   },
 };
 
 // ═══ STAR CANVAS ══════════════════════════════
-const canvas = document.getElementById('starCanvas');
-const ctx = canvas.getContext('2d');
-let stars = [];
-function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+const canvas=document.getElementById('starCanvas');
+const ctx=canvas.getContext('2d');
+let stars=[];
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
 function initStars(){
   stars=[];
   const n=Math.floor(canvas.width*canvas.height/2800);
   for(let i=0;i<n;i++){
-    stars.push({
-      x:Math.random()*canvas.width, y:Math.random()*canvas.height,
-      r:Math.random()*1.8+0.25,
-      base:Math.random()*0.65+0.15,
-      spd:Math.random()*0.018+0.004,
-      ph:Math.random()*Math.PI*2,
-      col:Math.random()>0.8?'#c8b8f8':Math.random()>0.65?'#e8e0ff':'#ffffff',
-    });
+    stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.8+.25,base:Math.random()*.65+.15,spd:Math.random()*.018+.004,ph:Math.random()*Math.PI*2,col:Math.random()>.8?'#c8b8f8':Math.random()>.65?'#e8e0ff':'#ffffff'});
   }
 }
 function drawStars(t){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   for(const s of stars){
-    const a=s.base*(0.45+0.55*Math.sin(t*s.spd+s.ph));
-    ctx.globalAlpha=a;
-    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle=s.col;ctx.fill();
-    if(s.r>1.3){
-      const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*6);
-      g.addColorStop(0,s.col==='#c8b8f8'?'rgba(200,184,248,0.22)':'rgba(255,255,255,0.18)');
-      g.addColorStop(1,'transparent');
-      ctx.globalAlpha=a*0.45;
-      ctx.beginPath();ctx.arc(s.x,s.y,s.r*6,0,Math.PI*2);
-      ctx.fillStyle=g;ctx.fill();
-    }
+    const a=s.base*(.45+.55*Math.sin(t*s.spd+s.ph));
+    ctx.globalAlpha=a;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.col;ctx.fill();
+    if(s.r>1.3){const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*6);g.addColorStop(0,s.col==='#c8b8f8'?'rgba(200,184,248,.22)':'rgba(255,255,255,.18)');g.addColorStop(1,'transparent');ctx.globalAlpha=a*.45;ctx.beginPath();ctx.arc(s.x,s.y,s.r*6,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();}
   }
   ctx.globalAlpha=1;
 }
-function loop(){ drawStars(performance.now()/1000); requestAnimationFrame(loop); }
-resize(); initStars(); loop();
-window.addEventListener('resize',()=>{ resize(); initStars(); });
+function loop(){drawStars(performance.now()/1000);requestAnimationFrame(loop);}
+resize();initStars();loop();
+window.addEventListener('resize',()=>{resize();initStars();});
 
-// ═══ BUILD BUTTONS ════════════════════════════
-const BTN_STYLES = {
-  wood:  { bg:'#72c472', from:'#c8f0c0', shadow:'rgba(114,196,114,0.5)' },
-  fire:  { bg:'#e86060', from:'#ffc0c0', shadow:'rgba(232,96,96,0.5)'   },
-  earth: { bg:'#e8be40', from:'#ffe89a', shadow:'rgba(232,190,64,0.55)' },
-  metal: { bg:'#b0a8e0', from:'#ffffff', shadow:'rgba(200,184,248,0.65)'},
-  water: { bg:'#4a90c8', from:'#a8d8ff', shadow:'rgba(74,144,200,0.5)'  },
-};
+// ═══ STATE ════════════════════════════════════
+let selectedTopic = null;
+let sel = [];
+const SEQ_TAGS = ['✦ 你','漣漪','卡住','開心','星光'];
 
-function buildGrid(){
+// ═══ 步驟指示更新 ══════════════════════════════
+function updateStepDots(step){
+  const d=['dot1','dot2','dot3'];
+  d.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.className='step-dot '+(i+1<step?'done':i+1===step?'active':'pending');
+  });
+}
+
+// ═══ 主題按鈕 ══════════════════════════════════
+function buildTopicGrid(){
+  const grid=document.getElementById('topic-grid');
+  grid.innerHTML='';
+  TOPICS.forEach(t=>{
+    const btn=document.createElement('button');
+    btn.className='topic-btn';
+    btn.innerHTML=`${t.svg}<span class="topic-name">${t.name}</span>`;
+    btn.onclick=()=>selectTopic(t.id,btn);
+    grid.appendChild(btn);
+  });
+}
+buildTopicGrid();
+
+function selectTopic(id, btn){
+  selectedTopic=id;
+  document.querySelectorAll('.topic-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('next-btn').disabled=false;
+}
+
+function goStep2(){
+  if(!selectedTopic) return;
+  document.getElementById('step1-card').style.display='none';
+  document.getElementById('step2-card').style.display='block';
+  buildColorGrid();
+  updateStepDots(2);
+  document.getElementById('step2-card').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ═══ 顏色按鈕 ══════════════════════════════════
+function buildColorGrid(){
   const grid=document.getElementById('color-grid');
   grid.innerHTML='';
   ELEMENTS_ORDER.forEach(el=>{
     const cfg=ELEMENT_CFG[el];
     const s=BTN_STYLES[el];
-    const item=document.createElement('div');
-    item.className='color-item';
-    const btn=document.createElement('button');
-    btn.className='color-btn';
-    btn.dataset.el=el;
-    btn.style.background=`radial-gradient(circle at 35% 30%, ${s.from} 0%, ${s.bg} 60%, ${s.bg} 100%)`;
-    btn.style.boxShadow=`0 0 0 3px ${s.shadow.replace('0.5','0.25')}, 0 6px 20px ${s.shadow}, inset 0 1px 0 rgba(255,255,255,0.4)`;
+    const item=document.createElement('div');item.className='color-item';
+    const btn=document.createElement('button');btn.className='color-btn';btn.dataset.el=el;
+    btn.style.background=`radial-gradient(circle at 35% 30%,${s.from} 0%,${s.bg} 60%,${s.bg} 100%)`;
+    btn.style.boxShadow=`0 0 0 3px ${s.shadow.replace('.5','.25')},0 6px 20px ${s.shadow},inset 0 1px 0 rgba(255,255,255,.4)`;
     btn.onclick=()=>pick(el);
-    const label=document.createElement('div');
-    label.className='color-label';
-    label.textContent=cfg.starName;
-    item.appendChild(btn);
-    item.appendChild(label);
+    const label=document.createElement('div');label.className='color-label';label.textContent=cfg.starName;
+    item.appendChild(btn);item.appendChild(label);
     grid.appendChild(item);
   });
 }
-buildGrid();
-
-// ═══ SELECTION ════════════════════════════════
-let sel=[];
-const SEQ_TAGS=['✦ 你','漣漪','卡住','開心','星光'];
 
 function pick(el){
   if(sel.includes(el)||sel.length>=5) return;
@@ -615,25 +453,24 @@ function pick(el){
 }
 
 function updateSeq(){
-  const c=document.getElementById('seq-display'); c.innerHTML='';
+  const c=document.getElementById('seq-display');c.innerHTML='';
   sel.forEach((el,i)=>{
     const cfg=ELEMENT_CFG[el];
-    const item=document.createElement('div'); item.className='seq-item';
-    item.innerHTML=`
-      <div class="seq-dot" style="background:radial-gradient(circle at 35% 30%,${cfg.light},${cfg.color} 70%)"></div>
-      <div class="seq-tag">${SEQ_TAGS[i]}</div>`;
+    const item=document.createElement('div');item.className='seq-item';
+    item.innerHTML=`<div class="seq-dot" style="background:radial-gradient(circle at 35% 30%,${cfg.light},${cfg.color} 70%)"></div><div class="seq-tag">${SEQ_TAGS[i]}</div>`;
     c.appendChild(item);
     setTimeout(()=>item.classList.add('visible'),40);
   });
 }
 
-// ═══ DIVINATION ═══════════════════════════════
+// ═══ 占卜 ═════════════════════════════════════
 function startDivination(){
   if(sel.length<5) return;
   document.getElementById('loading').classList.add('show');
   setTimeout(()=>{
     document.getElementById('loading').classList.remove('show');
     renderResult();
+    updateStepDots(3);
     const rs=document.getElementById('result-section');
     rs.classList.add('show');
     rs.scrollIntoView({behavior:'smooth',block:'start'});
@@ -642,146 +479,76 @@ function startDivination(){
 
 const LINE_SVG=`<svg style="width:22px;height:22px" viewBox="0 0 24 24" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>`;
 
-// 產生純文字占卜結果（供複製用）
-function buildResultText(){
-  const [e1,e2,e3,e4,e5] = sel;
-  const stars = getLuck(e1,e5);
-  const starStr = '★'.repeat(stars) + '☆'.repeat(4-stars);
-  const names = sel.map(el=>ELEMENT_CFG[el].starName);
-  const scents = READINGS.p4[e4].sprayName;
-
-  return `✨ 光語占卜結果 ✨
-━━━━━━━━━━━━━━
-今日星光：${starStr}
-
-【我選的顏色順序】
-${names.map((n,i)=>`${i+1}. ${n}`).join('\n')}
-
-【${POS_SCENE[0]}】${COLOR_IMAGE[e1]}
-${READINGS.p1[e1]}
-
-【${POS_SCENE[1]}】${COLOR_IMAGE[e2]}
-${READINGS.p2[e2]}
-
-【${POS_SCENE[2]}】${COLOR_IMAGE[e3]}
-${READINGS.p3[e3]}
-
-【${POS_SCENE[3]}】${COLOR_IMAGE[e4]}
-${READINGS.p4[e4].text}
-✦ 專屬能量噴霧：${scents}
-
-【${POS_SCENE[4]}】${COLOR_IMAGE[e5]}
-${READINGS.p5[e5]}
-━━━━━━━━━━━━━━
-想了解更多，歡迎前往光語占卜 LINE 賣場 🌙`;
-}
-
-function showToast(){
-  const t = document.getElementById('copy-toast');
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3200);
-}
-
-function copyAndOpenLine(){
-  const text = buildResultText();
-  // 複製到剪貼簿
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>{
-      showToast();
-      setTimeout(()=>window.open('https://liff.line.me/1657479438-ZMYpzMaY/products/322478318','_blank'), 600);
-    }).catch(()=>{
-      // fallback
-      fallbackCopy(text);
-    });
-  } else {
-    fallbackCopy(text);
-  }
-}
-
-function fallbackCopy(text){
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText='position:fixed;top:-999px;opacity:0';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try{ document.execCommand('copy'); showToast(); } catch(e){}
-  document.body.removeChild(ta);
-  setTimeout(()=>window.open('https://liff.line.me/1657479438-ZMYpzMaY/products/322478318','_blank'), 600);
-}
-
-function buildLineSection(e4){
-  const r = READINGS.p4[e4];
-  return `
-    <div class="aroma-prompt">✦ 星光為你指定的能量噴霧 ✦</div>
-    <div style="margin:12px 0 16px;background:rgba(200,184,248,0.1);border:1px solid rgba(200,184,248,0.28);border-radius:16px;padding:16px;text-align:center;position:relative;z-index:1">
-      <div style="font-size:1rem;font-weight:700;color:var(--lavender);letter-spacing:0.08em;margin-bottom:5px">${r.sprayName}</div>
-      <div style="font-size:0.75rem;color:var(--accent);opacity:0.82;letter-spacing:0.06em">${r.sprayDesc}</div>
-    </div>
-    <div class="line-sub">這是星光為此刻的你所選的專屬配方，<br>限量客製・每瓶都是獨一無二的你 🌙</div>
-    <button class="line-btn" onclick="copyAndOpenLine()">
-      ${LINE_SVG}
-      立即前往訂購
-    </button>`;
-}
-
 function renderResult(){
   const [e1,e2,e3,e4,e5]=sel;
-  const stars=getLuck(e1,e5);
+  const topic=TOPICS.find(t=>t.id===selectedTopic);
+  const spray=SPRAY[e4]; // 噴霧改為第4個顏色
+  const readingText=READING_MAP[selectedTopic][e5];
 
-  // 星星卡
-  let sh='';
-  for(let i=1;i<=4;i++) sh+=`<span class="${i<=stars?'star-filled':'star-empty'}">★</span>`;
-  document.getElementById('star-card').innerHTML=`
-    <span class="star-row">${sh}</span>
-    <div class="star-msg">${STAR_MSG[stars]}</div>`;
+  const e1Name=EL_NAME[e1];
+  const e5Name=EL_NAME[e5];
+  const e4Name=EL_NAME[e4];
+  const e1Trait=EL_TRAIT[e1].excess;
+  const e5Trait=EL_TRAIT[e5].lack;
 
-  // 位置卡
-  const cont=document.getElementById('pos-cards'); cont.innerHTML='';
-  [e1,e2,e3,e4,e5].forEach((el,i)=>{
-    const card=document.createElement('div');
-    card.className=`pos-card ${el}`;
-    let body='';
-    if(i===3){
-      const r=READINGS.p4[el];
-      body=`<p>${r.text}</p>
-        <div style="margin-top:16px;background:rgba(200,184,248,0.1);border:1px solid rgba(200,184,248,0.25);border-radius:16px;padding:14px 16px;text-align:center;">
-          <div style="font-size:0.95rem;font-weight:700;color:var(--lavender);letter-spacing:0.08em;margin-bottom:4px">${r.sprayName}</div>
-          <div style="font-size:0.72rem;color:var(--accent);opacity:0.8;letter-spacing:0.06em">${r.sprayDesc}</div>
-        </div>`;
-    } else if(i===4){
-      body=`<p>${READINGS.p5[el]}</p>`;
-    } else {
-      body=`<p>${READINGS[`p${i+1}`][el]}</p>`;
-    }
-    card.innerHTML=`
-      <div class="pos-header">
-        <div class="pos-orb ${el}"></div>
-        <div class="pos-meta">
-          <div class="pos-scene">${i+1} ── ${POS_SCENE[i]}</div>
-          <div class="pos-name">${COLOR_IMAGE[el]}</div>
-        </div>
+  // 解析文＋第4顏色引導語（穿插噴霧名）
+  const guide=EL_GUIDE[e4];
+  const fullText=`此刻你的能量狀態，${e1Name}氣較旺——${e1Trait}；同時${e5Name}氣相對不足——${e5Trait}。這樣的失衡，正悄悄影響著你的${topic.name}。${readingText} 想要讓這份狀況真正改善，可以透過「${spray.name}」的${e4Name}氣能量${guide}`;
+
+  const cont=document.getElementById('reading-card-container');
+  cont.innerHTML=`
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(200,184,248,.18);border-radius:24px;padding:26px 22px;margin-bottom:18px;backdrop-filter:blur(14px);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(200,184,248,.42),transparent)"></div>
+
+      <!-- 主題標籤 -->
+      <div style="text-align:center;margin-bottom:20px;">
+        <span style="display:inline-block;background:rgba(200,184,248,.15);border:1px solid rgba(200,184,248,.3);border-radius:20px;padding:5px 20px;font-size:.76rem;color:var(--lavender);letter-spacing:.12em;font-weight:700;">✦ ${topic.name} 解析 ✦</span>
       </div>
-      <div class="pos-body">${body}</div>`;
-    cont.appendChild(card);
-  });
 
-  // LINE 區（帶第4個顏色的香氛）
-  document.getElementById('line-section').innerHTML = buildLineSection(e4);
+      <!-- 合併解析文字 -->
+      <p style="font-size:.92rem;line-height:2.1;color:rgba(240,234,255,.92);letter-spacing:.05em;margin-bottom:24px;">${fullText}</p>
+
+      <!-- 分隔線 -->
+      <div style="height:1px;background:linear-gradient(to right,transparent,rgba(200,184,248,.25),transparent);margin-bottom:20px;"></div>
+
+      <!-- 香氛噴霧（第4個顏色） -->
+      <div style="background:rgba(200,184,248,.1);border:1px solid rgba(200,184,248,.25);border-radius:16px;padding:16px;text-align:center;margin-bottom:16px;">
+        <div style="font-size:.66rem;color:var(--accent);letter-spacing:.18em;opacity:.65;margin-bottom:8px;">✦ 為你調和${e4Name}氣・專屬能量噴霧 ✦</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--lavender);letter-spacing:.08em;margin-bottom:5px;">${spray.name}</div>
+        <div style="font-size:.76rem;color:var(--accent);opacity:.8;letter-spacing:.05em;">${spray.desc}</div>
+      </div>
+
+      <!-- 說明文字 -->
+      <p style="font-size:.78rem;color:var(--accent);opacity:.75;line-height:1.9;letter-spacing:.05em;text-align:center;margin-bottom:16px;">這是星光為此刻的你所選的專屬配方<br>限量客製・每瓶都是獨一無二的你 🌙</p>
+
+      <!-- 訂購按鈕 -->
+      <div style="text-align:center;">
+        <button class="order-btn" onclick="goOrder()">${LINE_SVG} 立即前往訂購</button>
+      </div>
+    </div>`;
+
+  document.getElementById('order-section').innerHTML='';
+}
+
+function goOrder(){
+  window.open('https://liff.line.me/1657479438-ZMYpzMaY/products/322478318','_blank');
 }
 
 // ═══ RESET ════════════════════════════════════
 function resetAll(){
+  selectedTopic=null;
   sel=[];
-  buildGrid();
-  document.getElementById('seq-display').innerHTML='';
-  document.getElementById('divine-btn').disabled=true;
-  const rs=document.getElementById('result-section');
-  rs.classList.remove('show');
-  rs.innerHTML=`
-    <div class="star-card" id="star-card"></div>
-    <div id="pos-cards"></div>
-    <div class="line-section" id="line-section"></div>
+  document.getElementById('step1-card').style.display='block';
+  document.getElementById('step2-card').style.display='none';
+  document.getElementById('result-section').classList.remove('show');
+  document.getElementById('result-section').innerHTML=`
+    <div id="reading-card-container"></div>
+    <div class="order-section" id="order-section"></div>
     <button class="reset-btn" onclick="resetAll()" style="margin-bottom:24px;">↺ 再占一次</button>`;
+  buildTopicGrid();
+  document.querySelectorAll('.topic-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('next-btn').disabled=true;
+  updateStepDots(1);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
